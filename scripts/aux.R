@@ -51,6 +51,62 @@ shape_elev <- c("low" = 21, "low-Dec" = 25, "medium" = 22, "high" = 24)
 shape_elev2 <- c("low" = 19, "low-Dec" = 18, "medium" = 15, "high" = 17)
 
 
+### Custom functions 
+
+
+## Custom function to compute drought events ----------------------
+# Compare the severe drought events.
+# A severe drought event starts when SPEI falls below the threshold of −1.28 (Páscoa et al 2017; Spinoni et al. 2018). A drought event is considered only when SPEI values fall below that threshold for at least two consecutive months. For each drought event, we computed:
+#
+#   - the duration as the number of consecutive months with the SPEI lower than a certain threshold
+# - the severity as the sum of the absolute SPEI values during the drought event
+# - the intensity and the Lowest SPEI refer to the mean and lowest value of SPEI, respectively, during the drought event.
+#
+# We computed the severe drought events (below -1.28) by site and per each index (i.e. SPEI-06 and SPEI-12) since 1960.
+
+droughtIndicators <- function(df, vname, threshold) {
+  require(data.table)
+  
+  # Add a new column indicating if the value is below the threshold and the following month is also below the threshold
+  out <- df |>
+    mutate(is_drought = ifelse(
+      .data[[vname]] < threshold & lead(.data[[vname]], default = .data[[vname]][n()]) < threshold, 1, 0
+    )) |>
+    mutate(date = lubridate::make_date(year, month))
+  
+  # Compute the drought duration of the events
+  out2 <- out |>
+    group_by(index_events = data.table::rleid(is_drought)) |>
+    mutate(drought_duration = sum(is_drought)) |>
+    as.data.frame()
+  
+  # Filter events with drought duration > 1
+  out3 <- out2 |>
+    filter(drought_duration > 1) |>
+    as.data.frame()
+  
+  # Compute several indicators (drought assessments)
+  da <- out3 |>
+    group_by(index_events) |>
+    summarise(
+      d_duration = unique(drought_duration),
+      d_intensity = mean(.data[[vname]], na.rm = TRUE),
+      d_severity = sum(abs(.data[[vname]]), na.rm = TRUE),
+      lowest_spei = min(.data[[vname]]),
+      month_peak = month[which.min(.data[[vname]])],
+      minyear = min(year),
+      maxyear = max(year),
+      rangeDate = paste(
+        lubridate::month(min(date, na.rm = TRUE), label = TRUE), "-",
+        (lubridate::month(max(date, na.rm = TRUE), label = TRUE))
+      )
+    ) |>
+    as.data.frame()
+  
+  return(list(data = out2, drought_events = out3, drought_assessment = da))
+}
+
+
 #### Functions to extract results from MLE
 # Define custom functions to extract data from models
 MLE_results_format <- function(x, yvar) {
