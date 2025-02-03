@@ -1,0 +1,87 @@
+
+
+
+climate <- read_csv("data/spei_climate.csv") |> 
+  dplyr::select(sp_elev, year, month, monthly_pet, monthly_tmed, monthly_prec) |> 
+  separate(sp_elev, into = c("sp", "code_elev"), remove = FALSE) |> 
+  slice()
+
+
+datos |> 
+  group_split(sp_elev) |>  # Dividir en subconjuntos basados en 'sp_elev'
+  walk(~ {
+    sp_elev_value <- unique(.x$sp_elev)  # Obtener el valor de 'sp_elev' del subconjunto
+    filename <- paste0("datos_", sp_elev_value, ".csv")  # Crear el nombre del archivo
+  })
+
+
+climate |> 
+  group_split(sp_elev) |>  # Dividir en subconjuntos basados en 'sp_elev'
+  walk(~ {
+    sp_elev_value <- unique(.x$sp_elev)  # Obtener el valor único de 'sp_elev'
+    filename <- paste0("/Users/ajpelu/Desktop/Desktop/data_pine/clima/clima_", sp_elev_value, ".csv")  # Crear el nombre del archivo
+    
+    write_csv(.x, filename)  # Guardar el subconjunto como CSV
+  })
+
+
+climate |> 
+  group_split(sp_elev) |>  # Dividir en subconjuntos basados en 'sp_elev'
+  set_names(unique(climate$sp_elev)) |>  # Usar los valores únicos de 'sp_elev' como nombres
+  walk(~ {
+    sp_elev_value <- unique(.x$sp_elev)  # Obtener el valor único de 'sp_elev'
+    subset <- .x |> 
+      select(-sp_elev, -sp, -code_elev)  # Eliminar las columnas no deseadas
+    filename <- paste0("data/climate/clima_", sp_elev_value, ".csv")  # Crear el nombre del archivo
+    write_csv(subset, filename)  # Exportar como CSV
+  })
+
+
+
+
+
+
+
+
+
+
+
+
+n <- npp |> dplyr::select(-sd, -se, -variable) |> rename(npp = mean) |> 
+  filter(sp_elev != "pinaster_low-Dec") 
+write_csv(n, "data/npp.csv")
+
+
+
+iv <- read_csv("data_raw/iv_landsat_c02.csv") 
+iv <- iv |> dplyr::select(EVI, NDVI, Specie, date, elev_code, sp_code) |> 
+  filter(elev_code != "low2")
+
+
+
+write_csv(iv, "data/iv_raw.csv")
+
+
+- Haz un bucle que lea todos los archivos de clima, y asigne tres variables nuevas a cada dataframe: el nombre del archivo (sin csv); un código de sp, y un codigo de elevación
+
+# Productividad forestal 
+- Genera el valor medio (y la desviación estándar) del NPP para cada sitio y especie.
+- Compara los valores medios de NPP por especie, y presentalos en formato gráfico 
+
+# Índices de verdor 
+- Nos hemos descargado un conjunto de datos de EVI y NDVI desde 1986 hasta 2022 para cada una de las parcelas (especie y sitio).
+- Lee los datos y preparalos para realizar un análisis. 
+  - Homogeniza los nombres de las variables (estandariza)
+  - Elimina los valores NA de cada variable 
+  - Formatea las variables en su formato correcto (p.ej. la fecha está como YYYYMMDD) 
+  - La variable especie tiene el nombre científico separado por un "-" (elimínalo) 
+- Genera un conjunto de datos que contenga el valor medio (y la desviación estándar) de NDVI anual para cada sitio (especie x elev) 
+- ¿Son diferentes los valores promedios de NDVI entre los diferentes sitios? 
+  
+  
+  
+
+
+
+
+
