@@ -46,7 +46,7 @@ df <- df_index |>
                names_to = "climate_variable")
 
 df_plot <- df |> 
-  filter(year > 1986) |> 
+  # filter(year > 1986) |> 
   mutate(y_variable2 = case_when(
     y_variable == "abi" ~ "ABI~(g~C~m^2~year^{-1})",
     y_variable == "evi_landsat" ~ "EVI[Landsat]",
@@ -80,6 +80,11 @@ df_plot <-
   mutate(sp_code = fct_relevel(sp_code, "halepensis","pinaster", "nigra", "sylvestris")) |> 
   mutate(Specie = fct_relevel(Specie, "P. halepensis","P. pinaster", "P. nigra", "P. sylvestris"))
 
+
+# Get time range periods 
+df_plot |> group_by(y_variable) |> 
+  summarise(start = min(year),
+            end = max(year))
 
 
 # Plot 
@@ -170,8 +175,8 @@ plot_prec <-
   base_theme + 
   custom_theme_figure + 
   theme(
-    legend.position = "top", 
-    legend.box = "vertical"
+    legend.position = "top"
+    # legend.box = "vertical"
   ) + 
   scale_x_continuous(limits = c(0, 1750)) +
   facet_wrap(~factor(y_variable2, c("EVI[Landsat]", 
@@ -194,7 +199,7 @@ plot_prec <-
 
 plot_tmed <- 
   df_plot |> 
-  filter(year > 1988) |> 
+  # filter(year > 1988) |> 
   filter(climate_variable == "tmed") |> 
   ggplot(aes(x=mean_climate, y = mean_y, colour = Specie)) + 
   geom_point(aes(shape = elev_code, fill = Specie), 
@@ -205,7 +210,8 @@ plot_tmed <-
               method = "nls", 
               formula = y ~ SSlogis(x, Asym, xmid, scal),
               se =  FALSE, # this is important 
-              linewidth = main_line_width, colour = main_line_color) +
+              linewidth = main_line_width, colour = main_line_color, 
+              control = nls.control(maxiter = 10000)) +
   ylab("") + 
   xlab("Annual Mean Temperature (ºC)") +
   custom_scales + 
@@ -281,14 +287,14 @@ wb_prec_tmed <- plot_prec / plot_tmed /plot_wb  &
 
 ggsave(
   wb_prec_tmed, 
-  file = "output/combined_wb_prec_tmed.png",
+  file = "output/plot_combined_wb_prec_tmed.png",
   dpi = 400,
-  width = 7.09*1.2, height = 7.09*1.3
+  width = 7.09*1.3, height = 7.09*1.3
 )
 
-ggsave(
-  wb_prec_tmed, 
-  file = "output/combined_wb_prec_tmed.pdf",
-  dpi = 400,
-  width = 7.09*1.2, height = 7.09*1.3
-)
+# ggsave(
+#   wb_prec_tmed, 
+#   file = "output/plot_combined_wb_prec_tmed.pdf",
+#   dpi = 400,
+#   width = 7.09*1.2, height = 7.09*1.3
+# )

@@ -1,6 +1,4 @@
 # Auxiliary scripts with colours,etc 
-
-
 colours_elev <- c("low" = "#ef7159",
                   "low-Dec" ="#FFCC3F",
                   "medium" = "#1B1F47",
@@ -49,6 +47,27 @@ colours_Specie_dark <- c(
 # shape_elev <- c("low" = 16, "low2" = 18, "medium" = 15, "high" = 17)
 shape_elev <- c("low" = 21, "low-Dec" = 25, "medium" = 22, "high" = 24)
 shape_elev2 <- c("low" = 19, "low-Dec" = 18, "medium" = 15, "high" = 17)
+
+
+
+
+
+## Base theme
+base_theme <- list(
+  theme_bw(),
+  theme(text = element_text(family = "Helvetica"),
+        axis.title.x = element_text(face = "bold", size = 12),
+        strip.text = element_text(face = "bold", size = 12),
+        axis.text = element_text(size = 10),
+        legend.text = element_text(size = 8))
+) 
+
+
+
+
+
+
+
 
 
 ### Custom functions 

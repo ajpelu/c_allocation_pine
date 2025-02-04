@@ -19,16 +19,10 @@ npp <- read_csv("data/npp_modis.csv") |>
   mutate(se = NA, sd = NA, variable = "npp") |> 
   dplyr::select(year, sp_code, elev_code, sp_elev, mean, sd, se, variable) 
 
-# npp <- read_csv("data/dendroadaptamed_npp_modis.csv") |> 
-#   rename(mean = npp) |> 
-#   mutate(se = NA, sd = NA, variable = "npp") |> 
-#   dplyr::select(-npp_qc, -sp_elev, -gpp, -Specie)
-
-# evi_landsat <- read_csv("data/dendroadaptamed_iv_landsat.csv") |> 
-#   filter(iv == "evi") |> 
-#   dplyr::select(year, sp_code, elev_code, mean, sd, se) |> 
-#   mutate(variable = "evi_landsat")
-
+evi_landsat <- read_csv("data/iv_landsat.csv") |> 
+  filter(iv == "evi") |> 
+  dplyr::select(year, sp_code, elev_code, mean, sd, se) |> 
+  mutate(variable = "evi_landsat")
 
 ratio <- read_csv("data/ratio_abinpp.csv") |> 
   dplyr::select(year, sp_code, elev_code, sp_elev, mean = ratio) |> 
@@ -110,7 +104,6 @@ mk <- bind_rows(mk_evi_landsat, mk_npp, mk_abi, mk_ratio) |>
 mk$taulabel <- gsub("−", "-", mk$taulabel)
 
 
-
 to_label <- as_labeller(c(
   "evi_landsat" = "EVI[Landsat]", 
   "npp" = "NPP[MODIS]~(g~C~m^2~year^{-1})",
@@ -119,6 +112,14 @@ to_label <- as_labeller(c(
 ), default = label_parsed)
 
 
+### To add letters to the facet 
+label_rows <- data.frame(
+  variable = c("evi_landsat", "npp", "abi", "ratio"),
+  letra = c("a", "b", "c", "d")
+)
+
+df <- df |> inner_join(label_rows)
+mk <- mk |> inner_join(label_rows)
 
 fig_ts <- df |> 
   filter(variable != "evi_modis") |>
@@ -127,47 +128,54 @@ fig_ts <- df |>
   ggplot(aes(x = year, y = mean, group = elev_code, colour = elev_code)) +
   geom_ribbon(aes(ymin = (mean - se), ymax=(mean+se), fill=elev_code), colour=NA, alpha=.2) + 
   geom_line() +
-  facet_grid(variable~factor(Specie, levels = c("P. halepensis", "P. pinaster", "P. nigra", "P. sylvestris")), 
-             scales = "free", 
-             switch = "y", 
-             labeller = labeller(variable = to_label)) + 
+  ggh4x::facet_nested(letra + variable ~factor(Specie, levels = c("P. halepensis", "P. pinaster", "P. nigra", "P. sylvestris")), 
+               scales = "free", 
+               switch = "y", 
+               labeller = labeller(variable = to_label),
+               strip = ggh4x::strip_themed(
+                 text_y = list(
+                   element_text(face = "bold", size = 18, angle = 0),
+                   element_text(face = "bold", size = 18, angle = 0),
+                   element_text(face = "bold", size = 18, angle = 0),
+                   element_text(face = "bold", size = 18, angle = 0),
+                   element_text(face = "bold", size = 15),
+                   element_text(face = "bold", size = 15),
+                   element_text(face = "bold", size = 15),
+                   element_text(face = "bold", size = 15)
+                   ))) +
   scale_colour_manual(values = colours_elev2, name = "") +
-  scale_fill_manual(values = colours_elev2, name="") + 
+  scale_fill_manual(values = colours_elev2, name="") +
+  scale_y_continuous(sec.axis = dup_axis()) +
+  geom_text(aes(x = min(df$year, na.rm = TRUE) + 5, y = ypos, label = taulabel), 
+            position = position_nudge(x = 5), 
+            data = (mk |> filter(variable != "abi")), 
+            parse = TRUE, show.legend = FALSE, hjust = "left", size = 4.5) +
+  ggh4x::facetted_pos_scales(
+  x = list(
+    scale_x_continuous(limits = c(1958,2021), breaks = seq(1950, 2020, by = 20), minor_breaks = seq(1950, 2020, by = 10), guide = "axis_minor", sec.axis = dup_axis()), # halepensis
+    scale_x_continuous(limits = c(1950,2021), breaks = seq(1940, 2020, by = 20), minor_breaks = seq(1950, 2020, by = 10), guide = "axis_minor", sec.axis = dup_axis()), # pinaster
+    scale_x_continuous(limits = c(1959,2021), breaks = seq(1950, 2020, by = 20), minor_breaks = seq(1950, 2020, by = 10), guide = "axis_minor", sec.axis = dup_axis()), # nigra
+    scale_x_continuous(limits = c(1962,2021), breaks = seq(1950, 2020, by = 20), minor_breaks = seq(1950, 2020, by = 10), guide = "axis_minor", sec.axis = dup_axis())  # pinaster
+  )
+) +
   theme_bw() +
   ylab("") +  xlab("") + 
   theme(
     text = element_text(family = "Helvetica"),
     panel.grid = element_blank(),
     panel.background = element_blank(),
-    strip.text.x = element_text(face = "italic", size = 13),
-    strip.text.y = element_text(face = "bold", size = 15),
+    strip.text.x = element_text(face = "italic", size = 12),
     strip.background = element_blank(),
     strip.placement = "outside", 
     legend.position = "bottom",
-    legend.text = element_text(size = 11),
-    axis.text = element_text(size = 11)
-  ) +
-  scale_y_continuous(sec.axis = dup_axis()) +
-  geom_text(aes(x = min(df$year, na.rm = TRUE) + 5, y = ypos, label = taulabel), 
-            position = position_nudge(x = 5), 
-            data = (mk |> filter(variable != "abi")), 
-            parse = TRUE, show.legend = FALSE, hjust = "left", size = 4.5) +
-  
-  # scale_x_continuous(limits = c(1951, 2021), breaks = seq(1950, 2020, by = 10), 
-  #                    sec.axis = dup_axis()) + 
-  ggh4x::facetted_pos_scales(
-  x = list(
-    scale_x_continuous(limits = c(1958,2021), breaks = seq(1950, 2020, by = 10), sec.axis = dup_axis()),  # halepensis
-    scale_x_continuous(limits = c(1950,2021), breaks = seq(1940, 2020, by = 10), sec.axis = dup_axis()), # pinaster
-    scale_x_continuous(limits = c(1959,2021), breaks = seq(1950, 2020, by = 10), sec.axis = dup_axis()), # nigra
-    scale_x_continuous(limits = c(1962,2021), breaks = seq(1950, 2020, by = 10), sec.axis = dup_axis())# pinaster
-  )
-)
+    legend.text = element_text(size = 15),
+    axis.text.y = element_text(size = 13),
+    axis.text.x = element_text(size = 11),
+    ggh4x.axis.ticks.length.minor = rel(1)
+  ) 
 
 
 
-
-fig_ts
 
 
 # 180 mm figure size (width)
@@ -178,7 +186,7 @@ ggsave(
   fig_ts, 
   file = "output/plot_ts_dendro_remote.jpg",
   dpi = 400,
-  width = 7.09*1.3*1.8, height = 7.09*1.3*1.4
+  width = 7.09*1.3*1.5, height = 7.09*1.3*1.2
 )
 
 # ggsave(
@@ -195,3 +203,18 @@ ggsave(
 #   width = 7.09*1.3*1.5, height = 7.09*1.3*1.4
 # )
 
+
+
+# Crear un gráfico de texto con solo las etiquetas de cada fila
+plot_labels <- ggplot(label_rows,
+                      aes(x = 1, y = variable, label = letra)) +
+  geom_text(hjust = 1, size = 6) +  # Letras alineadas a la izquierda
+  theme_void() +  # Eliminar ejes y fondos
+  theme(plot.margin = margin(5, 0, 5, 5))  # Ajustar márgenes
+
+# Combine las letras con el gráfico principal
+fig_final <- plot_labels + fig_ts + 
+  plot_layout(widths = c(0.05, 1)) 
+
+# Mostrar el gráfico final
+fig_final
