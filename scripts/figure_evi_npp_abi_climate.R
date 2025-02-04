@@ -1,6 +1,5 @@
 # title: "Figure NPP EVI ABI vs climate"
 
-
 library(tidyverse)
 library(ggh4x)
 library(patchwork)
@@ -46,7 +45,7 @@ df <- df_index |>
                names_to = "climate_variable")
 
 df_plot <- df |> 
-  # filter(year > 1986) |> 
+  filter(year > 1986) |> 
   mutate(y_variable2 = case_when(
     y_variable == "abi" ~ "ABI~(g~C~m^2~year^{-1})",
     y_variable == "evi_landsat" ~ "EVI[Landsat]",
@@ -197,21 +196,60 @@ plot_prec <-
 
 
 
+
+# Add NLS for EVI and Temperature (not converge with nls general)
+
+df_plot_tmed_evi <- df_plot |> filter(y_variable == "evi_landsat", climate_variable == "tmed")
+nls_fit <- nls(mean_y ~ a * exp(-b * mean_climate) + c, 
+               start = list(
+                 a = max(df_plot_tmed_evi$mean_y) - min(df_plot_tmed_evi$mean_y),  
+                 b = 0.1,  
+                 c = min(df_plot_tmed_evi$mean_y)  
+               ),
+               data = df_plot_tmed_evi,
+               control = nls.control(maxiter = 10000, tol = 1e-5, minFactor = 1e-7))
+
+df_pred_tmed_evi <- data.frame(
+  mean_climate =
+    seq(min(df_plot_tmed_evi$mean_climate), max(df_plot_tmed_evi$mean_climate),
+      length.out = 100
+    )
+) |>
+  mutate(y_variable = "evi_landsat", climate_variable = "tmed") |> 
+  mutate(y_variable2 = "EVI[Landsat]")
+
+df_pred_tmed_evi$mean_y <- predict(nls_fit, newdata = df_pred_tmed_evi) 
+
+
+df_pred_tmed_evi <- df_pred_tmed_evi |> 
+  bind_rows(
+    data.frame(
+      mean_climate = c(NA,NA),
+      mean_y = c(NA,NA),
+      y_variable = c("abi", "npp"),
+      y_variable2 = 
+        c("NPP[MODIS]~(g~C~m^2~year^{-1})",
+          "ABI~(g~C~m^2~year^{-1})"), 
+      climate_variable = c("tmed", "tmed")
+    )
+  )
+  
+
 plot_tmed <- 
   df_plot |> 
-  # filter(year > 1988) |> 
   filter(climate_variable == "tmed") |> 
   ggplot(aes(x=mean_climate, y = mean_y, colour = Specie)) + 
   geom_point(aes(shape = elev_code, fill = Specie), 
              alpha = alpha_points, size = size_points, stroke = stroke_points) +
   geom_smooth(aes(linetype = sig), linewidth = partial_lines_width, method = "lm", se = FALSE) +
   scale_linetype_manual(values = lines_lm, guide = "none") +
-  geom_smooth(aes(),
+  geom_smooth(
+    data = df_plot |> filter(y_variable != "evi_landsat"),
+    aes(),
               method = "nls", 
               formula = y ~ SSlogis(x, Asym, xmid, scal),
               se =  FALSE, # this is important 
-              linewidth = main_line_width, colour = main_line_color, 
-              control = nls.control(maxiter = 10000)) +
+              linewidth = main_line_width, colour = main_line_color) +
   ylab("") + 
   xlab("Annual Mean Temperature (ºC)") +
   custom_scales + 
@@ -231,8 +269,11 @@ plot_tmed <-
   geom_text(data = (letras |> filter(tipo == "temp")), 
             aes(x = x, y = y, label = label),
             vjust = 1.2, hjust = -1.2, size = 5, 
-            fontface = "bold", inherit.aes = FALSE)
-
+            fontface = "bold", inherit.aes = FALSE) +
+  geom_line(data = df_pred_tmed_evi,
+            aes(x = mean_climate, y = mean_y), 
+            linewidth = main_line_width, 
+            colour = main_line_color)
 
 plot_tmed 
 

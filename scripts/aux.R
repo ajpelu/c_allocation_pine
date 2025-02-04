@@ -214,8 +214,6 @@ plot_mle <- function(x, yvar, title = NULL, plot_type = c("observed", "residuals
 # plot_mle(x = result_mtabi1, yvar = "abi",  plot_type = "residuals")
 
 
-
-
 ######## Geom text 
 # Default geom text is 3.88 
 # 1 pt = 0.35 mm 
