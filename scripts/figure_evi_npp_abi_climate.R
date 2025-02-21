@@ -1,11 +1,21 @@
 # title: "Figure NPP EVI ABI vs climate"
 
+# pkgs 
 library(tidyverse)
 library(ggh4x)
 library(patchwork)
 source("scripts/aux.R")
 
 # Read data
+## ABI
+abi <- read_csv("data/abi.csv") |> 
+  mutate(se = NA, sd = NA, variable = "abi")
+
+## 
+
+
+
+
 ## annual pet
 annual_pet <- read_csv("data/spei_climate.csv") |> 
   dplyr::select(sp_elev, year, monthly_pet, monthly_tmed, monthly_prec) |> 
@@ -16,10 +26,6 @@ annual_pet <- read_csv("data/spei_climate.csv") |>
   rowwise() |> 
   mutate(water_balance = prec - pet)
 
-## abi 
-abi <- read_csv("data/abi.csv") |> 
-  rename(mean = IBT_ag_m2) |> 
-  mutate(se = NA, sd = NA, variable = "abi") 
 
 ## evi Landsat
 evi_landsat <- read_csv("data/iv_landsat.csv") |> 

@@ -1,14 +1,20 @@
 # title: "Figure ABI NPP EVI"
 
-
+# pkgs 
 library(tidyverse)
 library(boot)
 source("scripts/aux.R")
 
 options(scipen = 999)
-abi <- read_csv("data/abi.csv") |>
-  rename(mean = IBT_ag_m2) |>
+
+# Read data
+## ABI
+abi <- read_csv("data/abi.csv") |> 
   mutate(se = NA, sd = NA, variable = "abi")
+
+## EVI Landsat 
+
+
 
 evi_landsat <- read_csv("data/iv_landsat.csv") |>
   filter(iv == "evi") |>

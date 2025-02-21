@@ -1,0 +1,22 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Carbon allocation of pine afforestation under climate change"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - icon: github
+        href: https://github.com/ajpelu/c_allocation_pine
+        aria-label: GitHub repo 
+        
+format:
+  html:
+    theme: flatty
+    toc: true
+    code-fold: true
+    code-tools: true
+
+

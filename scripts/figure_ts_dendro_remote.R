@@ -1,5 +1,6 @@
 # title: "Figure Time series Dendrochronology and Remote Sensing"
 
+# pkgs
 library(tidyverse)
 library(kableExtra)
 library(ggh4x)
@@ -7,12 +8,13 @@ library(Kendall)
 library(trend)
 source("scripts/aux.R")
 
-
-
-## abi 
+# Read data
+## ABI
 abi <- read_csv("data/abi.csv") |> 
-  rename(mean = IBT_ag_m2) |> 
-  mutate(se = NA, sd = NA, variable = "abi") 
+  mutate(se = NA, sd = NA, variable = "abi")
+
+## EVI Landsat 
+
 
 npp <- read_csv("data/npp_modis.csv") |> 
   rename(mean = npp) |> 

@@ -1,10 +1,19 @@
 # title: "Summary EVI, NPP, ABI"
 
+# pkgs 
 library(tidyverse)
 library(emmeans)
 library(multcompView)
 library(kableExtra)
 source("scripts/aux.R")
+
+# Read data
+## ABI
+abi <- read_csv("data/abi.csv") |> 
+  mutate(se = NA, sd = NA, variable = "abi")
+
+## EVI Landsat 
+
 
 
 
