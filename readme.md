@@ -3,7 +3,7 @@
 
 ## Optimal carbon partitioning drives sink potential dynamics of afforestation under climate change
 
-[![minimal R version](https://img.shields.io/badge/R%3E%3D-4.2.1-brightgreen.svg)](https://cran.r-project.org/) [![Licence](https://img.shields.io/github/license/mashape/apistatus.svg)](http://choosealicense.com/licenses/mit/) [![DOI](https://zenodo.org/badge/541528099.svg)](https://zenodo.org/badge/latestdoi/541528099)
+[![minimal R version](https://img.shields.io/badge/R%3E%3D-4.2.1-brightgreen.svg)](https://cran.r-project.org/) [![Licence](https://img.shields.io/github/license/mashape/apistatus.svg)](http://choosealicense.com/licenses/mit/) [![DOI](https://zenodo.org/badge/926511852.svg)](https://doi.org/10.5281/zenodo.14918748)
 
 
 This repository contains all information and results for the paper 
@@ -36,3 +36,4 @@ This study is a contribution to projects:
 
 ### Repository: 
 Pérez-Luque AJ; Martín-Benit D; Zamora R & Gea-Izquierdo G. 2022. https://doi.org/10.5281/zenodo.7350714
+
