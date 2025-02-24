@@ -53,7 +53,6 @@ leaflet(parcelas_pinos) |>
   #addAwesomeMarkers(
     popup = ~paste0("<strong>Specie:</strong> ", parcelas_pinos$Specie, "</br>",
                     "<strong>site code:</strong> ", parcelas_pinos$sp_elev, "</br>",
-                    "<strong>name:</strong> ", parcelas_pinos$site_code, "</br>",
                     "<strong>elev:</strong> ", parcelas_pinos$elev, "</br>",
                     "<strong>LAI:</strong> ", parcelas_pinos$LAI,"</br>"),
     icon = ~icons(iconUrl = trees$iconUrl[Specie], iconWidth = 30, iconHeight = 30)
