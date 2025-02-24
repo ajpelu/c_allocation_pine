@@ -1,31 +1,38 @@
 # Readme 
 
-# spei_climate.csv viene de data/dendroadaptamed_spei_climate.csv"
-# abi <- data/dendroadaptamed_abi.csv
- 
-dendroadaptamed_npp_modis.csv
 
-dendroadaptamed_iv_landsat.csv
-dendroadaptamed_iv_modis.csv
+## Optimal carbon partitioning drives sink potential dynamics of afforestation under climate change
+
+[![minimal R version](https://img.shields.io/badge/R%3E%3D-4.2.1-brightgreen.svg)](https://cran.r-project.org/) [![Licence](https://img.shields.io/github/license/mashape/apistatus.svg)](http://choosealicense.com/licenses/mit/) [![DOI](https://zenodo.org/badge/541528099.svg)](https://zenodo.org/badge/latestdoi/541528099)
 
 
+This repository contains all information and results for the paper 
+*Optimal carbon partitioning drives sink potential dynamics of afforestation under climate change*. The paper have been submitted to *Nature Climate Change*
+
+## Website
+You can see the website of the repo at: https://ajpelu.github.io/c_allocation_pine 
 
 
-# Figures 
+## Acknowledgements 
 
-| Figure Name                     | Figure Numeration | Script Name                    |
-|----------------------------------|-------------------|-------------------------------|
-| mapa.                            | fig 1             |                               |
-| combined_wb_prec_tmed.png        | fig2              | figure_evi_npp_abi_climate.R  |
-| plot_model_selected.jpg          | fig 3             | figure_main_model.R           |
-| plot_compare_abi_npp_evi_sp.png  | fig 4             | figure_abi_npp_evi.R          |
-| ORTOFOFOS                        | fig S1            | mapa QGIS                     |
-| plot_ts_clima.jpg                | fig S2            | figure_ts_climate.R           |
-| plot_drouhgts.jpg                | fig S3            | figure_droughts.R             |
-| splot_evi_abi_npp_ratio_gradient.jpg | fig S4        | figure_evi_abi_npp_avg.R      |
-| plot_ts_dendro_remote.png        | fig S5            | figure_ts_dendro_remote.R     |
-| splot_model_validation.jpg       | fig S6            | model.R                       |
-| plot_evi_lai.jpg                 | fig S7            | figure_evi_lai.R              |
-| soil_ternary.jpg                 | fig S8            | figure_soil.R                 |
+This study is a contribution to projects:
+
+- PID2019-110273RB-I00
+
+- PID2022-142746NB-I00 funded by MCIN/AEI /10.13039/501100011033,
+
+- TED2021-131947B-100 also funded by the EU NextGenerationEU/PRTR.
+
+- [LIFE-ADAPTAMED](https://www.lifeadaptamed.eu/) (LIFE14 CCA/ES/000612). 
+
+- Antonio J. Pérez-Luque received funding from the Spanish Ministry of Science and Innovation through the Juan de la Cierva postdoctoral fellowship program. Grant JDC2022-050056-I funded by MCIN/AEI/
+10.13039/501100011033 and by “European Union NextGenerationEU/PRTR
+
+![](https://lh3.googleusercontent.com/d/1mMqNhNAeIlEyY_QTjZZ7bLtV96pg0ww-=w910-h417-rw)
 
 
+
+## How to cite: 
+
+### Repository: 
+Pérez-Luque AJ; Martín-Benit D; Zamora R & Gea-Izquierdo G. 2022. https://doi.org/10.5281/zenodo.7350714

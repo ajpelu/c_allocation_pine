@@ -1,0 +1,527 @@
+Note: [none]
+Total # of Iterations:	2e+05	
+Sample size:	253	
+Maximum likelihood:	# Parameters:	AIC corr:	AIC:	Slope:	R2:
+-233.6237	6	479.5889	479.2474	0.9899852	0.5082625	
+Model:	mcombrat7
+PDF:	dnorm
+Support interval range:	2
+
+Varying parameters:
+Label	MLE	Lower S.I.	Upper S.I.	Std Err	Lower Bound	Upper Bound	Final step size
+MR	0.5964771	0.208767	0.9736829	0.6390448	0	1	0.1984127	
+Ta	0.285934	0	0.6144044	0.4863492	0	1	1	
+k	-1.560809	-2	0.01471932	2.874149	-2	2	4	
+Topt	9.889263	0	11.40366	2.291387	0	20	20	
+Popt	851.2659	300	1000	2000.854	300	1000	700	
+Pb	1.176034	0.3998515	5	2.457578	0	5	4	
+
+Non-varying parameters:
+Label	Value
+mean	predicted	
+x	rat	
+tmed	tmed	
+prec	prec	
+log	TRUE	
+
+
+Annealing regime:
+Initial temp	Rt	ns	nt
+5	0.975	20	100
+
+Variance - Covariance Matrix:
+	MR	Ta	k	Topt	Popt	Pb
+MR	0.4083783	-0.2072607	0.8557874	-1.208103	152.1343	0.1431031	
+Ta	-0.2072607	0.2365355	-0.8492948	0.5822797	151.6373	-0.1650728	
+k	0.8557874	-0.8492948	8.260732	-3.106138	-54.75163	0.3036523	
+Topt	-1.208103	0.5822797	-3.106138	5.250456	430.1867	0.2733983	
+Popt	152.1343	151.6373	-54.75163	430.1867	4003415	4110.489	
+Pb	0.1431031	-0.1650728	0.3036523	0.2733983	4110.489	6.039691	
+
+Source data
+year	sp_code	elev_code	sp_elev	rat	prec	tmed	species	predicted	
+2001	sylvestris	medium	sylvestris_medium	0.4759616	559.2	11.81506	P. sylvestris	0.1788517	
+2002	sylvestris	medium	sylvestris_medium	0.3003152	635.5	11.736	P. sylvestris	0.187265	
+2003	sylvestris	medium	sylvestris_medium	0.3938742	759.1	11.01136	P. sylvestris	0.2324296	
+2004	sylvestris	medium	sylvestris_medium	0.3736255	561.4	10.63505	P. sylvestris	0.255384	
+2005	sylvestris	medium	sylvestris_medium	0.1600306	308.2	10.74701	P. sylvestris	0.1783505	
+2006	sylvestris	medium	sylvestris_medium	0.1650547	499.1	10.92373	P. sylvestris	0.2176122	
+2007	sylvestris	medium	sylvestris_medium	0.1405044	426.4	10.65338	P. sylvestris	0.2269046	
+2008	sylvestris	medium	sylvestris_medium	0.2793442	728.2	10.13953	P. sylvestris	0.3394375	
+2009	sylvestris	medium	sylvestris_medium	0.2575962	889.7	11.37159	P. sylvestris	0.2087392	
+2010	sylvestris	medium	sylvestris_medium	0.2420352	1428.5	10.44594	P. sylvestris	0.2690423	
+2011	sylvestris	medium	sylvestris_medium	0.2945809	609.9	10.68331	P. sylvestris	0.2557066	
+2012	sylvestris	medium	sylvestris_medium	0.1342082	552.5	10.97178	P. sylvestris	0.2214476	
+2013	sylvestris	medium	sylvestris_medium	0.2948654	584.9	10.09672	P. sylvestris	0.3319926	
+2014	sylvestris	medium	sylvestris_medium	0.1885472	484	10.88113	P. sylvestris	0.2185441	
+2015	sylvestris	medium	sylvestris_medium	0.1472617	368.1	11.48234	P. sylvestris	0.1576585	
+2016	sylvestris	medium	sylvestris_medium	0.1241091	590.5	10.91439	P. sylvestris	0.2306693	
+2017	sylvestris	medium	sylvestris_medium	0.1573864	368.8	11.61667	P. sylvestris	0.1533385	
+2018	sylvestris	medium	sylvestris_medium	0.2249388	1022.5	9.9215	P. sylvestris	0.3735941	
+2001	sylvestris	high	sylvestris_high	0.6260474	555.4	10.40382	P. sylvestris	0.2830284	
+2002	sylvestris	high	sylvestris_high	0.4121322	631.3	10.34639	P. sylvestris	0.300735	
+2003	sylvestris	high	sylvestris_high	0.5715017	758.4	9.428958	P. sylvestris	0.4546884	
+2004	sylvestris	high	sylvestris_high	0.5446219	565.1	9.050484	P. sylvestris	0.4761248	
+2005	sylvestris	high	sylvestris_high	0.4744601	312.2	9.207542	P. sylvestris	0.3386437	
+2006	sylvestris	high	sylvestris_high	0.5349582	502.9	9.288868	P. sylvestris	0.4311677	
+2007	sylvestris	high	sylvestris_high	0.3405907	437	8.983948	P. sylvestris	0.4369132	
+2008	sylvestris	high	sylvestris_high	0.5210497	716.7	8.392047	P. sylvestris	0.552996	
+2009	sylvestris	high	sylvestris_high	0.4548816	887.9	9.816253	P. sylvestris	0.3953822	
+2010	sylvestris	high	sylvestris_high	0.5954203	1421.6	8.801879	P. sylvestris	0.4824159	
+2011	sylvestris	high	sylvestris_high	0.5923556	601.7	8.94437	P. sylvestris	0.4951391	
+2012	sylvestris	high	sylvestris_high	0.4001922	561.4	9.426972	P. sylvestris	0.4294142	
+2013	sylvestris	high	sylvestris_high	0.4739078	576.1	8.407901	P. sylvestris	0.5281659	
+2014	sylvestris	high	sylvestris_high	0.4527148	494.8	9.156835	P. sylvestris	0.4436916	
+2015	sylvestris	high	sylvestris_high	0.4141188	359.5	9.872912	P. sylvestris	0.2952461	
+2016	sylvestris	high	sylvestris_high	0.4945938	619.1	9.220841	P. sylvestris	0.468038	
+2017	sylvestris	high	sylvestris_high	0.4601859	364.9	10.06176	P. sylvestris	0.2738967	
+2018	sylvestris	high	sylvestris_high	0.5061606	1009.9	8.12988	P. sylvestris	0.564796	
+2001	halepensis	low	halepensis_low	0.1543426	208.4	15.39656	P. halepensis	0.08339255	
+2002	halepensis	low	halepensis_low	0.1832787	217.7	15.09243	P. halepensis	0.08714496	
+2003	halepensis	low	halepensis_low	0.1523323	213.4	14.97087	P. halepensis	0.08544858	
+2004	halepensis	low	halepensis_low	0.3161728	319	14.6502	P. halepensis	0.1205706	
+2005	halepensis	low	halepensis_low	0.1251806	101.8	14.48524	P. halepensis	0.03346337	
+2006	halepensis	low	halepensis_low	0.08662605	260.6	15.12706	P. halepensis	0.1028403	
+2007	halepensis	low	halepensis_low	0.1073976	167.7	14.68435	P. halepensis	0.06578191	
+2008	halepensis	low	halepensis_low	0.1177354	256.5	14.63184	P. halepensis	0.1015277	
+2009	halepensis	low	halepensis_low	0.1325189	325.7	15.36337	P. halepensis	0.1222219	
+2010	halepensis	low	halepensis_low	0.4343702	436.6	14.5268	P. halepensis	0.1454251	
+2011	halepensis	low	halepensis_low	0.2418193	203.2	15.04664	P. halepensis	0.08128425	
+2012	halepensis	low	halepensis_low	0.01669328	207.8	15.13608	P. halepensis	0.08316724	
+2013	halepensis	low	halepensis_low	0.1009567	181.3	14.43493	P. halepensis	0.07198115	
+2014	halepensis	low	halepensis_low	0.03109615	142.9	15.50237	P. halepensis	0.05395239	
+2015	halepensis	low	halepensis_low	0.1053782	223.7	15.65799	P. halepensis	0.0894497	
+2016	halepensis	low	halepensis_low	0.1208357	283	15.34972	P. halepensis	0.110067	
+2017	halepensis	low	halepensis_low	0.1397098	140.1	15.58787	P. halepensis	0.05258221	
+2018	halepensis	low	halepensis_low	0.08104308	337.8	14.57152	P. halepensis	0.1254467	
+2019	halepensis	low	halepensis_low	0.04561179	104.8	15.32993	P. halepensis	0.03492994	
+2020	halepensis	low	halepensis_low	0.09793627	199.5	15.80108	P. halepensis	0.07969806	
+2021	halepensis	low	halepensis_low	0.06287278	240	15.51106	P. halepensis	0.09557666	
+2022	halepensis	low	halepensis_low	0.1351467	303.7	16.53306	P. halepensis	0.116173	
+2001	halepensis	high	halepensis_high	0.09732386	361.6	13.31781	P. halepensis	0.1323899	
+2002	halepensis	high	halepensis_high	0.1655779	330.5	13.11083	P. halepensis	0.1254062	
+2003	halepensis	high	halepensis_high	0.1609994	327.3	12.85564	P. halepensis	0.1255354	
+2004	halepensis	high	halepensis_high	0.1874337	348.6	12.68337	P. halepensis	0.1318776	
+2005	halepensis	high	halepensis_high	0.0406339	144.9	12.70888	P. halepensis	0.05656486	
+2006	halepensis	high	halepensis_high	0.07405498	327.7	12.9846	P. halepensis	0.125106	
+2007	halepensis	high	halepensis_high	0.05920739	332.5	12.51785	P. halepensis	0.1289407	
+2008	halepensis	high	halepensis_high	0.03349928	265.6	12.51045	P. halepensis	0.1087288	
+2009	halepensis	high	halepensis_high	0.09358744	358.1	13.48725	P. halepensis	0.1312357	
+2010	halepensis	high	halepensis_high	0.1480221	484.3	12.65853	P. halepensis	0.1569961	
+2011	halepensis	high	halepensis_high	0.1508633	330.9	12.93468	P. halepensis	0.1261397	
+2012	halepensis	high	halepensis_high	0.04389473	290	12.90525	P. halepensis	0.1146555	
+2013	halepensis	high	halepensis_high	0.1161283	215.9	12.39118	P. halepensis	0.09062662	
+2014	halepensis	high	halepensis_high	0.04617053	222.2	13.19346	P. halepensis	0.09011145	
+2015	halepensis	high	halepensis_high	0.07283431	214.1	13.34513	P. halepensis	0.08661938	
+2016	halepensis	high	halepensis_high	0.03174495	274	13.01616	P. halepensis	0.109194	
+2017	halepensis	high	halepensis_high	0.08635824	171.4	13.70839	P. halepensis	0.06781646	
+2018	halepensis	high	halepensis_high	0.08286346	395.5	12.15359	P. halepensis	0.1476762	
+2019	halepensis	high	halepensis_high	0.07499991	204.7	13.21725	P. halepensis	0.0829666	
+2020	halepensis	high	halepensis_high	0.07621066	275.8	13.56741	P. halepensis	0.1086135	
+2021	halepensis	high	halepensis_high	0.04650233	196.6	13.33447	P. halepensis	0.07935889	
+2022	halepensis	high	halepensis_high	0.07267583	254.4	14.66723	P. halepensis	0.1007957	
+2001	halepensis	medium	halepensis_medium	0.1684874	202.9	14.31136	P. halepensis	0.08129874	
+2002	halepensis	medium	halepensis_medium	0.1775987	222.2	14.03289	P. halepensis	0.08918542	
+2003	halepensis	medium	halepensis_medium	0.1766173	199	13.75783	P. halepensis	0.07994125	
+2004	halepensis	medium	halepensis_medium	0.2561497	323.2	13.44531	P. halepensis	0.1226824	
+2005	halepensis	medium	halepensis_medium	0.08581704	107.3	13.29281	P. halepensis	0.03661707	
+2006	halepensis	medium	halepensis_medium	0.08165883	266.1	13.85621	P. halepensis	0.1051386	
+2007	halepensis	medium	halepensis_medium	0.1181447	171.8	13.40368	P. halepensis	0.06826284	
+2008	halepensis	medium	halepensis_medium	0.1629166	260.9	13.29086	P. halepensis	0.1041335	
+2009	halepensis	medium	halepensis_medium	0.1210237	320.7	14.15875	P. halepensis	0.1212309	
+2010	halepensis	medium	halepensis_medium	0.1912346	436.9	13.24589	P. halepensis	0.1471267	
+2011	halepensis	medium	halepensis_medium	0.1455412	203.9	13.70181	P. halepensis	0.0820377	
+2012	halepensis	medium	halepensis_medium	0.02651434	211.9	13.9476	P. halepensis	0.08514515	
+2013	halepensis	medium	halepensis_medium	0.05568562	176.2	13.13108	P. halepensis	0.07065171	
+2014	halepensis	medium	halepensis_medium	0.03503488	142.3	14.17628	P. halepensis	0.05380506	
+2015	halepensis	medium	halepensis_medium	0.05777684	229.5	14.40997	P. halepensis	0.09183705	
+2016	halepensis	medium	halepensis_medium	0.02008387	296	14.03355	P. halepensis	0.1143755	
+2017	halepensis	medium	halepensis_medium	0.07143941	143.1	14.3783	P. halepensis	0.05415078	
+2018	halepensis	medium	halepensis_medium	0.06278213	331.5	13.19144	P. halepensis	0.125429	
+2001	pinaster	low	pinaster_low	0.1573845	366.4	13.22271	P. pinaster	0.1337141	
+2002	pinaster	low	pinaster_low	0.09247242	344.7	13.00417	P. pinaster	0.1293558	
+2003	pinaster	low	pinaster_low	0.1796374	354.1	12.71884	P. pinaster	0.1329889	
+2004	pinaster	low	pinaster_low	0.1271469	327.9	12.64827	P. pinaster	0.1268109	
+2005	pinaster	low	pinaster_low	0.04003083	147.1	12.66909	P. pinaster	0.0577691	
+2006	pinaster	low	pinaster_low	0.1220973	370.9	12.90435	P. pinaster	0.1358635	
+2007	pinaster	low	pinaster_low	0.05457975	318.7	12.35925	P. pinaster	0.1265408	
+2008	pinaster	low	pinaster_low	0.09209923	298.7	12.24473	P. pinaster	0.1217975	
+2009	pinaster	low	pinaster_low	0.08777828	476.6	13.21941	P. pinaster	0.1530938	
+2010	pinaster	low	pinaster_low	0.147539	561.7	12.50525	P. pinaster	0.166854	
+2011	pinaster	low	pinaster_low	0.1625557	271.4	12.83743	P. pinaster	0.108978	
+2012	pinaster	low	pinaster_low	0.04442081	276.6	13.05593	P. pinaster	0.1099175	
+2013	pinaster	low	pinaster_low	0.1986661	382	12.1365	P. pinaster	0.1450489	
+2014	pinaster	low	pinaster_low	0.08226787	258.1	13.12328	P. pinaster	0.1035449	
+2015	pinaster	low	pinaster_low	0.07064392	213.9	13.41941	P. pinaster	0.0864332	
+2016	pinaster	low	pinaster_low	0.03355328	313.9	13.12578	P. pinaster	0.1209019	
+2017	pinaster	low	pinaster_low	0.07154471	200	13.75114	P. pinaster	0.0803677	
+2018	pinaster	low	pinaster_low	0.09808652	448.9	12.33429	P. pinaster	0.1549948	
+2019	pinaster	low	pinaster_low	0.04748416	267.3	13.37264	P. pinaster	0.1061373	
+2020	pinaster	low	pinaster_low	0.1259869	321.5	13.44884	P. pinaster	0.1222226	
+2021	pinaster	low	pinaster_low	0.05763474	199.8	13.45395	P. pinaster	0.08056535	
+2001	pinaster	low-Dec	pinaster_low-Dec	0.1068164	359.4	12.74955	P. pinaster	0.1340574	
+2002	pinaster	low-Dec	pinaster_low-Dec	0.1348452	335.1	12.55089	P. pinaster	0.1293721	
+2003	pinaster	low-Dec	pinaster_low-Dec	0.149858	348.1	12.19674	P. pinaster	0.1362065	
+2004	pinaster	low-Dec	pinaster_low-Dec	0.1437259	338	12.10822	P. pinaster	0.1347898	
+2005	pinaster	low-Dec	pinaster_low-Dec	0.04349623	141.1	12.14503	P. pinaster	0.05685912	
+2006	pinaster	low-Dec	pinaster_low-Dec	0.09018941	353.4	12.34522	P. pinaster	0.1358004	
+2007	pinaster	low-Dec	pinaster_low-Dec	0.07338176	322.3	11.82288	P. pinaster	0.1353889	
+2008	pinaster	low-Dec	pinaster_low-Dec	0.04840161	285.4	11.73981	P. pinaster	0.1253366	
+2009	pinaster	low-Dec	pinaster_low-Dec	0.1039761	446.3	12.75106	P. pinaster	0.1508469	
+2010	pinaster	low-Dec	pinaster_low-Dec	0.1173053	541	11.96879	P. pinaster	0.1731633	
+2011	pinaster	low-Dec	pinaster_low-Dec	0.1305473	292.8	12.25463	P. pinaster	0.1198499	
+2012	pinaster	low-Dec	pinaster_low-Dec	0.03379989	277.9	12.49898	P. pinaster	0.1129493	
+2013	pinaster	low-Dec	pinaster_low-Dec	0.1174534	326.3	11.61853	P. pinaster	0.1415719	
+2014	pinaster	low-Dec	pinaster_low-Dec	0.05003962	252.3	12.56447	P. pinaster	0.103699	
+2015	pinaster	low-Dec	pinaster_low-Dec	0.09789741	218.7	12.8414	P. pinaster	0.08963148	
+2016	pinaster	low-Dec	pinaster_low-Dec	0.03536019	304.8	12.54195	P. pinaster	0.1210343	
+2017	pinaster	low-Dec	pinaster_low-Dec	0.04882452	199.1	13.19164	P. pinaster	0.08065073	
+2018	pinaster	low-Dec	pinaster_low-Dec	0.07868437	445.6	11.68466	P. pinaster	0.1675189	
+2019	pinaster	low-Dec	pinaster_low-Dec	0.04198474	252.4	12.74521	P. pinaster	0.1028171	
+2020	pinaster	low-Dec	pinaster_low-Dec	0.09480179	323.4	12.92051	P. pinaster	0.1242133	
+2021	pinaster	low-Dec	pinaster_low-Dec	0.07480113	202.2	12.89171	P. pinaster	0.08264864	
+2001	pinaster	medium	pinaster_medium	0.26936	360.2	12.25136	P. pinaster	0.1385002	
+2002	pinaster	medium	pinaster_medium	0.189034	341.6	12.06719	P. pinaster	0.1363539	
+2003	pinaster	medium	pinaster_medium	0.3093132	355.5	11.65683	P. pinaster	0.1487292	
+2004	pinaster	medium	pinaster_medium	0.2482097	326.3	11.55707	P. pinaster	0.1433768	
+2005	pinaster	medium	pinaster_medium	0.04001177	147.8	11.61297	P. pinaster	0.06524114	
+2006	pinaster	medium	pinaster_medium	0.1178683	362.9	11.78407	P. pinaster	0.1473117	
+2007	pinaster	medium	pinaster_medium	0.0556492	322	11.27962	P. pinaster	0.1522035	
+2008	pinaster	medium	pinaster_medium	0.1127203	335.5	11.05442	P. pinaster	0.1681272	
+2009	pinaster	medium	pinaster_medium	0.1548122	532	12.19787	P. pinaster	0.1678831	
+2010	pinaster	medium	pinaster_medium	0.2486419	666.6	11.4048	P. pinaster	0.2026869	
+2011	pinaster	medium	pinaster_medium	0.3110653	305.6	11.72189	P. pinaster	0.1324842	
+2012	pinaster	medium	pinaster_medium	0.0837598	334.9	11.98467	P. pinaster	0.1358941	
+2013	pinaster	medium	pinaster_medium	0.228604	425	11.00224	P. pinaster	0.1967984	
+2014	pinaster	medium	pinaster_medium	0.1205257	333.6	11.95345	P. pinaster	0.1360823	
+2015	pinaster	medium	pinaster_medium	0.1291197	260.8	12.41273	P. pinaster	0.1077413	
+2016	pinaster	medium	pinaster_medium	0.06625869	382.1	11.93446	P. pinaster	0.1485708	
+2017	pinaster	medium	pinaster_medium	0.09849051	207.7	12.7014	P. pinaster	0.08561186	
+2001	pinaster	high	pinaster_high	0.5828131	368.2	11.36156	P. pinaster	0.1624688	
+2002	pinaster	high	pinaster_high	0.3738774	349.9	11.2134	P. pinaster	0.164126	
+2003	pinaster	high	pinaster_high	0.5811849	390.2	10.68792	P. pinaster	0.2132013	
+2004	pinaster	high	pinaster_high	0.5059657	373.1	10.54402	P. pinaster	0.2215004	
+2005	pinaster	high	pinaster_high	0.07626182	163	10.63039	P. pinaster	0.1014639	
+2006	pinaster	high	pinaster_high	0.2310098	373.2	10.73044	P. pinaster	0.2039993	
+2007	pinaster	high	pinaster_high	0.1078383	333.4	10.28368	P. pinaster	0.2328823	
+2008	pinaster	high	pinaster_high	0.1626592	376.8	9.905245	P. pinaster	0.2995539	
+2009	pinaster	high	pinaster_high	0.29091	612.7	11.18799	P. pinaster	0.2116866	
+2010	pinaster	high	pinaster_high	0.4185128	799.9	10.32817	P. pinaster	0.312857	
+2011	pinaster	high	pinaster_high	0.478777	353.3	10.55143	P. pinaster	0.2134596	
+2012	pinaster	high	pinaster_high	0.2128957	371.2	10.89882	P. pinaster	0.189865	
+2013	pinaster	high	pinaster_high	0.4040281	454	9.824873	P. pinaster	0.3417281	
+2014	pinaster	high	pinaster_high	0.197504	385.2	10.75392	P. pinaster	0.2057542	
+2015	pinaster	high	pinaster_high	0.2710632	295.9	11.31034	P. pinaster	0.1418229	
+2016	pinaster	high	pinaster_high	0.1525367	444.8	10.71864	P. pinaster	0.2251258	
+2017	pinaster	high	pinaster_high	0.1960562	231.9	11.61003	P. pinaster	0.1072933	
+2018	pinaster	high	pinaster_high	0.3262517	506.9	10.01994	P. pinaster	0.3283676	
+2019	pinaster	high	pinaster_high	0.138568	279.3	11.08017	P. pinaster	0.1455172	
+2020	pinaster	high	pinaster_high	0.2202332	318.8	11.42356	P. pinaster	0.145455	
+2001	nigra	low	nigra_low	0.1085746	359	12.07944	P. nigra	0.1405819	
+2002	nigra	low	nigra_low	0.1229677	336.2	11.90305	P. nigra	0.1377349	
+2003	nigra	low	nigra_low	0.1445175	350.7	11.48727	P. nigra	0.152794	
+2004	nigra	low	nigra_low	0.127417	340.7	11.36707	P. nigra	0.1544425	
+2005	nigra	low	nigra_low	0.04128587	143.3	11.44162	P. nigra	0.06513427	
+2006	nigra	low	nigra_low	0.09253699	355.1	11.5831	P. nigra	0.1508158	
+2007	nigra	low	nigra_low	0.09946053	322.9	11.09165	P. nigra	0.1616901	
+2008	nigra	low	nigra_low	0.0596355	297.7	10.91769	P. nigra	0.1622312	
+2009	nigra	low	nigra_low	0.1932361	458.8	12.02929	P. nigra	0.1612447	
+2010	nigra	low	nigra_low	0.2550653	572.6	11.21354	P. nigra	0.2063371	
+2011	nigra	low	nigra_low	0.237985	302.1	11.43551	P. nigra	0.1394461	
+2012	nigra	low	nigra_low	0.07283805	288.3	11.72606	P. nigra	0.1266389	
+2013	nigra	low	nigra_low	0.1092085	335.8	10.77581	P. nigra	0.1871701	
+2014	nigra	low	nigra_low	0.06899374	270.5	11.70423	P. nigra	0.1207655	
+2015	nigra	low	nigra_low	0.09069465	228.8	12.07968	P. nigra	0.0986111	
+2016	nigra	low	nigra_low	0.04204381	323.4	11.67049	P. nigra	0.1392908	
+2017	nigra	low	nigra_low	0.1004605	201.1	12.4234	P. nigra	0.08411796	
+2018	nigra	low	nigra_low	0.0970911	452.6	10.83334	P. nigra	0.2163688	
+2019	nigra	low	nigra_low	0.06027039	256.5	11.95002	P. nigra	0.1111331	
+2020	nigra	low	nigra_low	0.1406959	322.7	12.1936	P. nigra	0.1294644	
+2021	nigra	low	nigra_low	0.1143764	203.9	12.11509	P. nigra	0.08762752	
+2001	nigra	medium	nigra_medium	0.07969127	358.8	11.77294	P. nigra	0.1465442	
+2002	nigra	medium	nigra_medium	0.0690587	335.6	11.61888	P. nigra	0.1443064	
+2003	nigra	medium	nigra_medium	0.09859162	351.5	11.17159	P. nigra	0.1667499	
+2004	nigra	medium	nigra_medium	0.06142529	346.2	11.03588	P. nigra	0.1727735	
+2005	nigra	medium	nigra_medium	0.01988913	144.3	11.13217	P. nigra	0.07174936	
+2006	nigra	medium	nigra_medium	0.0460038	355.8	11.23782	P. nigra	0.1646713	
+2007	nigra	medium	nigra_medium	0.03301357	320.7	10.76736	P. nigra	0.1819683	
+2008	nigra	medium	nigra_medium	0.02011435	299.2	10.55713	P. nigra	0.1896511	
+2009	nigra	medium	nigra_medium	0.09045893	459.5	11.71132	P. nigra	0.1690686	
+2010	nigra	medium	nigra_medium	0.1403275	584.4	10.87116	P. nigra	0.2339295	
+2011	nigra	medium	nigra_medium	0.1341438	311.1	11.06629	P. nigra	0.1588123	
+2012	nigra	medium	nigra_medium	0.02887239	293.3	11.36616	P. nigra	0.1387618	
+2013	nigra	medium	nigra_medium	0.04479617	332.7	10.40011	P. nigra	0.2201104	
+2014	nigra	medium	nigra_medium	0.02434118	276.5	11.3142	P. nigra	0.1342952	
+2015	nigra	medium	nigra_medium	0.05118988	233.4	11.72756	P. nigra	0.1055906	
+2016	nigra	medium	nigra_medium	0.02165737	330.6	11.268	P. nigra	0.1555288	
+2017	nigra	medium	nigra_medium	0.06356096	202	12.07103	P. nigra	0.08719866	
+2001	nigra	high	nigra_high	0.3170893	360.9	11.36243	P. nigra	0.1604492	
+2002	nigra	high	nigra_high	0.2377955	337.3	11.21471	P. nigra	0.1601601	
+2003	nigra	high	nigra_high	0.3464311	358	10.70226	P. nigra	0.2012955	
+2004	nigra	high	nigra_high	0.2816574	361.3	10.55819	P. nigra	0.215816	
+2005	nigra	high	nigra_high	0.09565752	148.7	10.65748	P. nigra	0.08956332	
+2006	nigra	high	nigra_high	0.1990407	358.1	10.74932	P. nigra	0.1973287	
+2007	nigra	high	nigra_high	0.1211196	322	10.27977	P. nigra	0.2277769	
+2008	nigra	high	nigra_high	0.1466144	306.6	10.04482	P. nigra	0.2454139	
+2009	nigra	high	nigra_high	0.2626483	479.1	11.26267	P. nigra	0.19101	
+2010	nigra	high	nigra_high	0.3644781	622.5	10.39393	P. nigra	0.2931571	
+2011	nigra	high	nigra_high	0.283016	331.7	10.56176	P. nigra	0.2038109	
+2012	nigra	high	nigra_high	0.1164069	303.2	10.91	P. nigra	0.1649692	
+2013	nigra	high	nigra_high	0.2163242	331.8	9.910485	P. nigra	0.275672	
+2014	nigra	high	nigra_high	0.1126222	289.8	10.81058	P. nigra	0.1657935	
+2015	nigra	high	nigra_high	0.2184333	243.3	11.25379	P. nigra	0.1223996	
+2016	nigra	high	nigra_high	0.1012387	347.1	10.75417	P. nigra	0.1930486	
+2017	nigra	high	nigra_high	0.1816787	204.2	11.60485	P. nigra	0.09474156	
+2018	nigra	high	nigra_high	0.1813105	458.2	9.91548	P. nigra	0.3300511	
+2019	nigra	high	nigra_high	0.1076421	255.8	11.08597	P. nigra	0.1349239	
+2020	nigra	high	nigra_high	0.2435312	319.6	11.4141	P. nigra	0.1460561	
+2001	sylvestris	low	sylvestris_low	0.1752625	557	11.99493	P. sylvestris	0.1741951	
+2002	sylvestris	low	sylvestris_low	0.121445	632.8	11.90282	P. sylvestris	0.1822872	
+2003	sylvestris	low	sylvestris_low	0.1414086	762	11.21308	P. sylvestris	0.2174698	
+2004	sylvestris	low	sylvestris_low	0.1390418	567.7	10.82874	P. sylvestris	0.2359872	
+2005	sylvestris	low	sylvestris_low	0.08112583	306.9	10.92854	P. sylvestris	0.1652845	
+2006	sylvestris	low	sylvestris_low	0.08830946	503.6	11.12806	P. sylvestris	0.2030982	
+2007	sylvestris	low	sylvestris_low	0.07755052	428.3	10.84717	P. sylvestris	0.2095839	
+2008	sylvestris	low	sylvestris_low	0.1060988	722.2	10.35224	P. sylvestris	0.306739	
+2009	sylvestris	low	sylvestris_low	0.1035995	889.2	11.56453	P. sylvestris	0.1994615	
+2010	sylvestris	low	sylvestris_low	0.1193004	1430.6	10.65089	P. sylvestris	0.2449342	
+2011	sylvestris	low	sylvestris_low	0.147881	608.7	10.90389	P. sylvestris	0.2333922	
+2012	sylvestris	low	sylvestris_low	0.09275033	551.8	11.18644	P. sylvestris	0.205765	
+2013	sylvestris	low	sylvestris_low	0.1607469	582.8	10.31331	P. sylvestris	0.2995493	
+2014	sylvestris	low	sylvestris_low	0.1034699	481.1	11.10675	P. sylvestris	0.2008617	
+2015	sylvestris	low	sylvestris_low	0.1036026	365.4	11.68766	P. sylvestris	0.1504215	
+2016	sylvestris	low	sylvestris_low	0.07726855	584.3	11.13128	P. sylvestris	0.2129519	
+2017	sylvestris	low	sylvestris_low	0.09549652	366.2	11.82421	P. sylvestris	0.1471901	
+2018	sylvestris	low	sylvestris_low	0.0982538	1019.7	10.1593	P. sylvestris	0.3353144	
+
+Likelihood History
+Iteration	Temperature	Likelihood
+0	5	-240.8078	
+0.3333333	5	-236.6269	
+0.5	5	-235.56	
+0.6666667	5	-235.1612	
+0.8333333	5	-235.112	
+3	5	-234.8423	
+6.166667	5	-234.8406	
+6.333333	5	-234.8064	
+6.5	5	-234.8058	
+13.66667	5	-234.6364	
+14	5	-234.6187	
+34.16667	5	-234.227	
+34.33333	5	-233.8542	
+34.5	5	-233.8492	
+34.83333	5	-233.8354	
+1000	5	-233.8354	
+1905.167	5	-233.8119	
+1916.667	5	-233.7305	
+1916.833	5	-233.7305	
+2000	4.875	-233.7305	
+3000	4.875	-233.7305	
+4000	4.753125	-233.7305	
+5000	4.753125	-233.7305	
+6000	4.634297	-233.7305	
+7000	4.634297	-233.7305	
+8000	4.518439	-233.7305	
+8588.333	4.518439	-233.7192	
+9000	4.518439	-233.7192	
+9161.333	4.518439	-233.7093	
+9198.333	4.518439	-233.6886	
+9198.833	4.518439	-233.6875	
+10000	4.405478	-233.6875	
+11000	4.405478	-233.6875	
+12000	4.295342	-233.6875	
+13000	4.295342	-233.6875	
+14000	4.187958	-233.6875	
+15000	4.187958	-233.6875	
+16000	4.083259	-233.6875	
+17000	4.083259	-233.6875	
+18000	3.981178	-233.6875	
+19000	3.981178	-233.6875	
+20000	3.881648	-233.6875	
+21000	3.881648	-233.6875	
+22000	3.784607	-233.6875	
+23000	3.784607	-233.6875	
+24000	3.689992	-233.6875	
+25000	3.689992	-233.6875	
+26000	3.597742	-233.6875	
+27000	3.597742	-233.6875	
+28000	3.507798	-233.6875	
+29000	3.507798	-233.6875	
+30000	3.420103	-233.6875	
+31000	3.420103	-233.6875	
+32000	3.334601	-233.6875	
+33000	3.334601	-233.6875	
+33259.5	3.334601	-233.6726	
+34000	3.251236	-233.6726	
+35000	3.251236	-233.6726	
+35152.17	3.251236	-233.6661	
+36000	3.169955	-233.6661	
+37000	3.169955	-233.6661	
+38000	3.090706	-233.6661	
+39000	3.090706	-233.6661	
+40000	3.013438	-233.6661	
+41000	3.013438	-233.6661	
+42000	2.938102	-233.6661	
+43000	2.938102	-233.6661	
+44000	2.86465	-233.6661	
+45000	2.86465	-233.6661	
+46000	2.793034	-233.6661	
+47000	2.793034	-233.6661	
+48000	2.723208	-233.6661	
+49000	2.723208	-233.6661	
+50000	2.655128	-233.6661	
+51000	2.655128	-233.6661	
+52000	2.588749	-233.6661	
+53000	2.588749	-233.6661	
+54000	2.524031	-233.6661	
+55000	2.524031	-233.6661	
+56000	2.46093	-233.6661	
+57000	2.46093	-233.6661	
+58000	2.399407	-233.6661	
+59000	2.399407	-233.6661	
+60000	2.339421	-233.6661	
+61000	2.339421	-233.6661	
+62000	2.280936	-233.6661	
+63000	2.280936	-233.6661	
+64000	2.223913	-233.6661	
+65000	2.223913	-233.6661	
+66000	2.168315	-233.6661	
+67000	2.168315	-233.6661	
+68000	2.114107	-233.6661	
+69000	2.114107	-233.6661	
+70000	2.061254	-233.6661	
+71000	2.061254	-233.6661	
+72000	2.009723	-233.6661	
+73000	2.009723	-233.6661	
+74000	1.95948	-233.6661	
+75000	1.95948	-233.6661	
+76000	1.910493	-233.6661	
+77000	1.910493	-233.6661	
+78000	1.86273	-233.6661	
+79000	1.86273	-233.6661	
+80000	1.816162	-233.6661	
+81000	1.816162	-233.6661	
+82000	1.770758	-233.6661	
+83000	1.770758	-233.6661	
+83246.83	1.770758	-233.6433	
+84000	1.726489	-233.6433	
+85000	1.726489	-233.6433	
+86000	1.683327	-233.6433	
+87000	1.683327	-233.6433	
+88000	1.641244	-233.6433	
+89000	1.641244	-233.6433	
+90000	1.600213	-233.6433	
+91000	1.600213	-233.6433	
+92000	1.560207	-233.6433	
+93000	1.560207	-233.6433	
+94000	1.521202	-233.6433	
+95000	1.521202	-233.6433	
+95381.83	1.521202	-233.636	
+95382	1.521202	-233.6335	
+96000	1.483172	-233.6335	
+97000	1.483172	-233.6335	
+98000	1.446093	-233.6335	
+99000	1.446093	-233.6335	
+1e+05	1.409941	-233.6335	
+101000	1.409941	-233.6335	
+102000	1.374692	-233.6335	
+103000	1.374692	-233.6335	
+104000	1.340325	-233.6335	
+105000	1.340325	-233.6335	
+106000	1.306817	-233.6335	
+107000	1.306817	-233.6335	
+108000	1.274146	-233.6335	
+109000	1.274146	-233.6335	
+110000	1.242293	-233.6335	
+111000	1.242293	-233.6335	
+112000	1.211235	-233.6335	
+113000	1.211235	-233.6335	
+114000	1.180954	-233.6335	
+115000	1.180954	-233.6335	
+116000	1.15143	-233.6335	
+117000	1.15143	-233.6335	
+118000	1.122645	-233.6335	
+119000	1.122645	-233.6335	
+120000	1.094579	-233.6335	
+121000	1.094579	-233.6335	
+122000	1.067214	-233.6335	
+123000	1.067214	-233.6335	
+124000	1.040534	-233.6335	
+125000	1.040534	-233.6335	
+126000	1.01452	-233.6335	
+127000	1.01452	-233.6335	
+128000	0.9891574	-233.6335	
+129000	0.9891574	-233.6335	
+130000	0.9644285	-233.6335	
+131000	0.9644285	-233.6335	
+131124.8	0.9644285	-233.6239	
+132000	0.9403178	-233.6239	
+133000	0.9403178	-233.6239	
+134000	0.9168098	-233.6239	
+135000	0.9168098	-233.6239	
+136000	0.8938896	-233.6239	
+137000	0.8938896	-233.6239	
+138000	0.8715423	-233.6239	
+139000	0.8715423	-233.6239	
+140000	0.8497538	-233.6239	
+141000	0.8497538	-233.6239	
+142000	0.8285099	-233.6239	
+143000	0.8285099	-233.6239	
+144000	0.8077972	-233.6239	
+145000	0.8077972	-233.6239	
+146000	0.7876023	-233.6239	
+147000	0.7876023	-233.6239	
+148000	0.7679122	-233.6239	
+149000	0.7679122	-233.6239	
+150000	0.7487144	-233.6239	
+151000	0.7487144	-233.6239	
+152000	0.7299965	-233.6239	
+153000	0.7299965	-233.6239	
+154000	0.7117466	-233.6239	
+154991	0.7117466	-233.6237	
+155000	0.7117466	-233.6237	
+156000	0.693953	-233.6237	
+157000	0.693953	-233.6237	
+158000	0.6766041	-233.6237	
+159000	0.6766041	-233.6237	
+160000	0.659689	-233.6237	
+161000	0.659689	-233.6237	
+162000	0.6431968	-233.6237	
+163000	0.6431968	-233.6237	
+164000	0.6271169	-233.6237	
+165000	0.6271169	-233.6237	
+166000	0.611439	-233.6237	
+167000	0.611439	-233.6237	
+168000	0.596153	-233.6237	
+169000	0.596153	-233.6237	
+170000	0.5812492	-233.6237	
+171000	0.5812492	-233.6237	
+172000	0.5667179	-233.6237	
+173000	0.5667179	-233.6237	
+174000	0.55255	-233.6237	
+175000	0.55255	-233.6237	
+176000	0.5387362	-233.6237	
+177000	0.5387362	-233.6237	
+178000	0.5252678	-233.6237	
+179000	0.5252678	-233.6237	
+180000	0.5121361	-233.6237	
+181000	0.5121361	-233.6237	
+182000	0.4993327	-233.6237	
+183000	0.4993327	-233.6237	
+184000	0.4868494	-233.6237	
+185000	0.4868494	-233.6237	
+186000	0.4746782	-233.6237	
+187000	0.4746782	-233.6237	
+188000	0.4628112	-233.6237	
+189000	0.4628112	-233.6237	
+190000	0.4512409	-233.6237	
+191000	0.4512409	-233.6237	
+192000	0.4399599	-233.6237	
+193000	0.4399599	-233.6237	
+194000	0.4289609	-233.6237	
+195000	0.4289609	-233.6237	
+196000	0.4182369	-233.6237	
+197000	0.4182369	-233.6237	
+198000	0.407781	-233.6237	
+199000	0.407781	-233.6237	
+2e+05	0.3975864	-233.6237	

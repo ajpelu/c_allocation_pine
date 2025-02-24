@@ -156,7 +156,7 @@ result_mprecrat3 <- anneal(
 )
 
 # result_mprecrat3 |> likelihood::write_results("output/models/univariate_prec_lognormal.txt")
-```
+
 
 
 ## Multiplicative 

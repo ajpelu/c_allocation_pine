@@ -1,22 +1,64 @@
-project:
-  type: website
-  output-dir: docs
+---
+title: "Optimal carbon partitioning drives sink potential dynamics of afforestation under climate change"
+author: 
+  - name: "Antonio J. Pérez-Luque"
+    orcid: 0000-0002-1747-0469
+    email: antonio.perez@inia.csic.es
+  - name: "Darío Martín-Benito"
+    orcid: 0000-0002-6738-3312
+    email: dmartin@inia.csic.es
+  - name: "Regino Zamora"
+    orcid: 0000-0002-5049-9968
+    email: rzamora@ugr.es
+  - name: "Guillermo Gea-Izquierdo"
+    orcid: 0000-0003-0148-3721
+    email: gea.guillermo@inia.csic.es
+---
 
-website:
-  title: "Carbon allocation of pine afforestation under climate change"
-  navbar:
-    left:
-      - href: index.qmd
-        text: Home
-      - icon: github
-        href: https://github.com/ajpelu/c_allocation_pine
-        aria-label: GitHub repo 
-        
-format:
-  html:
-    theme: flatty
-    toc: true
-    code-fold: true
-    code-tools: true
+[![minimal R version](https://img.shields.io/badge/R%3E%3D-4.2.1-brightgreen.svg)](https://cran.r-project.org/) [![Licence](https://img.shields.io/github/license/mashape/apistatus.svg)](http://choosealicense.com/licenses/mit/)
+
+
+This repository contains all code for the paper 
+*Optimal carbon partitioning drives sink potential dynamics of afforestation under climate change* 
+
+The paper have been submitted to *Nature Climate Change*.
+
+
+## Analysis 
+- [Compare models](analysis/model.qmd) 
+- [Selected model](analysis/model_selected.qmd)
+- [R-pkgs used](rpkg.qmd)
+
+## Figures 
+- [Figure 1](output/figure1.png)
+- [Figure 2](analysis/figure_evi_npp_abi_climate.qmd)
+- [Figure 3](analysis/figure_main_model.qmd)
+- [Figure 4](analysis/figure_abi_npp_evi.qmd)
+
+## Supplementary 
+- [Figure S1](output/figureS1.jpg)
+- [Figure S2](analysis/figure_ts_climate.qmd)
+- [Figure S3](analysis/figure_droughts.qmd)
+- [Figure S4](analysis/figure_evi_abi_npp_avg.qmd)
+- [Figure S5](analysis/figure_ts_dendro_remote.qmd)
+- [Figure S6](analysis/model_selected.qmd#validation-plot)
+- [Figure S7](analysis/figure_evi_lai.qmd)
+- [Figure S8](analysis/figure_soil.qmd)
+
+## Spatial distribution of the study sites 
+- [Map](spatial.qmd)
+
+## Funding  
+This study is a contribution to projects:
+
+- PID2019-110273RB-I00
+- PID2022-142746NB-I00 funded by MCIN/AEI /10.13039/501100011033, 
+- TED2021-131947B-100 also funded by the EU NextGenerationEU/PRTR.
+- [LIFE-ADAPTAMED](https://www.lifeadaptamed.eu/) (LIFE14 CCA/ES/000612). 
+
+- Antonio J. Pérez-Luque received funding from the Spanish Ministry of Science and Innovation through the Juan de la Cierva postdoctoral fellowship program. Grant JDC2022-050056-I funded by MCIN/AEI/
+10.13039/501100011033 and by “European Union NextGenerationEU/PRTR
+
+![](https://lh3.googleusercontent.com/d/1mMqNhNAeIlEyY_QTjZZ7bLtV96pg0ww-=w910-h417-rw)
 
 

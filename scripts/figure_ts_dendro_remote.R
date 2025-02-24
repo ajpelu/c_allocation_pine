@@ -13,9 +13,6 @@ source("scripts/aux.R")
 abi <- read_csv("data/abi.csv") |> 
   mutate(se = NA, sd = NA, variable = "abi")
 
-## EVI Landsat 
-
-
 npp <- read_csv("data/npp_modis.csv") |> 
   rename(mean = npp) |> 
   mutate(se = NA, sd = NA, variable = "npp") |> 
@@ -207,16 +204,16 @@ ggsave(
 
 
 
-# Crear un gráfico de texto con solo las etiquetas de cada fila
-plot_labels <- ggplot(label_rows,
-                      aes(x = 1, y = variable, label = letra)) +
-  geom_text(hjust = 1, size = 6) +  # Letras alineadas a la izquierda
-  theme_void() +  # Eliminar ejes y fondos
-  theme(plot.margin = margin(5, 0, 5, 5))  # Ajustar márgenes
-
-# Combine las letras con el gráfico principal
-fig_final <- plot_labels + fig_ts + 
-  plot_layout(widths = c(0.05, 1)) 
-
-# Mostrar el gráfico final
-fig_final
+# # Crear un gráfico de texto con solo las etiquetas de cada fila
+# plot_labels <- ggplot(label_rows,
+#                       aes(x = 1, y = variable, label = letra)) +
+#   geom_text(hjust = 1, size = 6) +  # Letras alineadas a la izquierda
+#   theme_void() +  # Eliminar ejes y fondos
+#   theme(plot.margin = margin(5, 0, 5, 5))  # Ajustar márgenes
+# 
+# # Combine las letras con el gráfico principal
+# fig_final <- plot_labels + fig_ts + 
+#   plot_layout(widths = c(0.05, 1)) 
+# 
+# # Mostrar el gráfico final
+# fig_final

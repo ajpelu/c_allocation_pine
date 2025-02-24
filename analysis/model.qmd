@@ -1,0 +1,665 @@
+---
+title: "Model ABI:NPP ratio"
+format: 
+  html:
+    toc: false
+    keep_md: true
+execute:
+  message: false
+  warning: false
+  cache: true
+---
+
+
+```{r}
+library(tidyverse)
+library(patchwork)
+library(likelihood)
+library(kableExtra)
+source("../scripts/aux.R")
+
+annual_pet <- read_csv("../data/spei_climate.csv") |> 
+  dplyr::select(sp_elev, year, monthly_pet, monthly_tmed, monthly_prec) |> 
+  group_by(sp_elev, year) |>
+  summarise(pet = sum(monthly_pet), 
+            prec = sum(monthly_prec),
+            tmed = mean(monthly_tmed, na.rm = TRUE)) |> 
+  rowwise() |> 
+  mutate(water_balance = prec - pet)
+
+ratio <- read_csv("../data/ratio_abinpp.csv") |> 
+  dplyr::select(year, sp_code, elev_code, sp_elev, ratio_abi_npp = ratio) 
+
+df <- ratio |> 
+  inner_join(annual_pet) |> 
+  pivot_longer(pet:water_balance, values_to = "mean_climate", 
+               names_to = "climate_variable")
+```
+
+
+## Univariate models 
+### Temperature 
+
+$$(ABI:NPP)_i=MR \times g(T_{med}) + \epsilon_i$$
+where: 
+
+- $(ABI:NPP)_i$ is the value of the ABI:NPP ratio for each site and year
+- $MR$ is a parameter representing the maximum ABI:NPP ratio (dimensionless)
+- $\epsilon_i$ is the random error for each observation $i$.
+- $g(T_{med})$ is a function with values between 0 and 1, which depends on temperature. This function, $g(T_{med})$, can take different forms. 
+
+#### Proposed Functions for Temperature (Table S6) 
+
+- Gaussian (**mtrat1**)  
+$$g(T_{med})=\exp \left[ -\frac{1}{2} \left(\frac{TMED-T_{OPT}} {T_b}\right)^2 \right]$$  
+
+
+- Log-normal (**mtrat3**)  
+$$g(T_{med})=\exp \left[ -\frac{1}{2} \left(\frac{\log{(\frac{TMED}{T_{OPT}}}) }{T_b}\right)^2 \right]$$ 
+  
+
+- Logistic modified (**mtrat6**)  
+$$g(T_{med})=(1-T_a) \times \left[\frac{1}{1+\exp (-k \times (TMED - T_{OPT})) }\right] + T_a$$  
+
+
+where: 
+
+- $TMED$ is the value of the annual mean temperature
+- $T_{OPT}$ = optimum value of the annual mean temperature at which occur the maximum ratio (Lognormal and Gaussian models) or that represent the half-saturation point (logistic part in the Logistic modified model)
+- $T_b$ = scale parameter
+- $k$ = rate that determines the steepness of the logistic curve
+- $T_a$ = scaling factor that adjust the influence of the logistic function. 
+
+
+The error term in the model 
+
+$$(ABI:NPP)_i=MR \times g(T_{med}) + \epsilon_i$$
+is assumed to follows a normal distribution $\epsilon_i \sim \mathcal{N}(0,1)$
+  
+
+
+```{r}
+dtmed <- df |> 
+  filter(climate_variable == "tmed") |> 
+  dplyr::select(rat = ratio_abi_npp, tmed = mean_climate)
+
+
+
+mtrat1 <- function(MR, Topt, Tb)
+{
+  tmed_effect <- exp(-0.5*((dtmed$tmed - Topt)/Tb)^2)
+  MR * tmed_effect
+}
+
+mtrat3 <- function(MR, Topt, Tb)
+{
+  tmed_effect <- exp(-0.5*(log(dtmed$tmed/Topt)/Tb)^2)
+  MR * tmed_effect
+}
+
+mtrat6 <- function(MR, k, Topt, Ta){
+  tmed_effect <- (1-Ta)*(1 / (1 + exp(- k *( dtmed$tmed - Topt)))) + Ta 
+  MR*tmed_effect
+}
+
+
+name_models <- data.frame(
+  modelo = paste0("mtrat",c(1,3,6)), 
+  name_modelo = c("Gaussian",
+                  "Log-normal",
+                  "Logistic_Mod")
+)
+
+var=list(mean = "predicted", x = "rat", tmed = "tmed", log = TRUE)  
+
+## Guassian model (temp)
+set.seed(1234)
+result_mtrat1 <- anneal(
+  model = mtrat1, 
+  var = var, 
+  source_data = dtmed,
+  par = list(MR = 0.7, Topt = 10.5, Tb = 1.5),
+  par_lo = list(MR = 0, Topt = 5, Tb = 0.01),
+  par_hi = list(MR = 1, Topt = 20, Tb = 5),
+  pdf = dnorm,
+  dep_var = "rat",
+  initial_temp = 5, 
+  temp_red = 0.975, 
+  max_iter = 100000, 
+  show_display = FALSE
+)
+
+result_mtrat1 |> 
+  likelihood::write_results("../output/models/mtrat1.txt")
+
+#Log-normal (temp)
+set.seed(1234)
+
+result_mtrat3 <- anneal(
+  model = mtrat3, 
+  var = var, 
+  source_data = dtmed,
+  par = list(MR = 0.7, Topt = 10.5, Tb = 1.5),
+  par_lo = list(MR = 0, Topt = 5, Tb = 0.01),
+  par_hi = list(MR = 1, Topt = 20, Tb = 5),
+  pdf = dnorm,
+  dep_var = "rat",
+  initial_temp = 5, 
+  temp_red = 0.975, 
+  max_iter = 100000, 
+  show_display = FALSE
+)
+
+result_mtrat3 |> 
+  likelihood::write_results("../output/models/mtrat3.txt")
+
+# Logistic mod. (temp)
+set.seed(1234)
+
+result_mtrat6 <- anneal(
+  model = mtrat6, 
+  var = var, 
+  source_data = dtmed,
+  par = list(MR = 0.7, Ta = 0.09, k = -1, Topt = 10),
+  par_lo = list(MR = 0, Ta = 0, k = -2, Topt = 0),
+  par_hi = list(MR = 1, Ta = 0.2, k = 2, Topt = 20),
+  pdf = dnorm,
+  dep_var = "rat",
+  initial_temp = 5, 
+  temp_red = 0.975, 
+  max_iter = 100000, 
+  show_display = FALSE
+)
+
+result_mtrat6 |> 
+  likelihood::write_results("../output/models/mtrat6.txt")
+
+all_results <-
+  mget(
+    grep("^result_mtrat", ls(), value = TRUE)
+  ) |>
+  purrr::imap_dfr(~ MLE_results_format(.x, yvar = "rat"), .id = "modelo") |>
+  arrange(aic_cor) |>
+  mutate(modelo = str_remove(modelo, "result_"))
+
+
+# compute delta AIC and add computation time
+models_results <- all_results |>
+  # inner_join(all_time) |>
+  inner_join(name_models) |>
+  relocate(name_modelo, .after = modelo) |> 
+  mutate(deltaAIC = dAIC(aic_cor))
+
+models_results |> 
+  write_csv("../data/models_ratio_tmed_summary.csv")
+```
+
+### Precipitation 
+
+
+$$(ABI:NPP)_i=MR \times g(PREC) + \epsilon_i$$
+where: 
+
+- $(ABI:NPP)_i$ is the value of the ABI:NPP ratio for each site and year
+- $MR$ is a parameter representing the maximum ABI:NPP ratio (dimensionless)
+- $\epsilon_i$ is the random error for each observation $i$
+- $g(PREC)$ is a function with values between 0 and 1, which depends on precipitation. This function, $g(PREC)$, can take different forms. 
+#### Proposed Functions for Precipitation (Table S6) 
+
+- Gaussian (**mprecrat1**)  
+$$g(Prec)=\exp \left[ -\frac{1}{2} \left(\frac{PREC-P_{OPT}} {P_b}\right)^2 \right]$$  
+
+
+- Log-normal (**mprecrat3**)  
+$$g(Prec)=\exp \left[ -\frac{1}{2} \left(\frac{\log{(\frac{PREC}{P_{OPT}}}) }{P_b}\right)^2 \right]$$ 
+- Gompertz (**mprecrat5**)  
+$$g(Prec)=P_a \times \exp \left[ - P_d \times \exp (-Pc \times PREC)\right]$$  
+where: 
+- $PREC$ is the value of the annual precipitation
+- $P_{OPT}$ = value of the precipitation at which the ABI:NPP ratio is expected to be optimum
+- $P_b$ = scale parameter that adjust for the variability in the response of the ABI:NPP ratio to changes in precipitation
+- $P_a$ = scaling factor
+- $P_d$ = modulates the amplitude of the exponential response
+- $P_c$ = parameter to control the sensitivity of the response to precipitation
+
+
+```{r}
+dprec<- df |> 
+  filter(climate_variable == "prec") |> 
+  dplyr::select(rat = ratio_abi_npp, prec = mean_climate)
+
+mprecrat1 <- function(MR, Popt, Pb)
+{
+  prec_effect <- exp(-0.5*((dprec$prec - Popt)/Pb)^2)
+  MR * prec_effect 
+}
+
+mprecrat3 <- function(MR, Popt, Pb)
+{
+  prec_effect <- exp(-0.5*(log(dprec$prec/Popt)/Pb)^2)
+  MR * prec_effect 
+}
+
+mprecrat5 <-  function(MR, Pa, Pd, Pc)
+{
+  prec_effect <- Pa * exp(-Pd * exp (-Pc * dprec$prec))
+  MR * prec_effect
+}
+
+name_models <- data.frame(
+  modelo = paste0("mprecrat",c(1,3,5)),
+  name_modelo = c("Gaussian",
+                  "Log-normal",
+                  "Gompertz")
+)
+
+# Gaussian (prec)
+set.seed(1234)
+
+result_mprecrat1 <- anneal(
+  model = mprecrat1, 
+  var = var, 
+  source_data = dprec,
+  par = list(MR = 0.7, Popt = 500, Pb = 200),
+  par_lo = list(MR = 0, Popt = 300, Pb = 0 ),
+  par_hi = list(MR = 1, Popt = 1000, Pb = 600),
+  pdf = dnorm,
+  dep_var = "rat",
+  initial_temp = 5, 
+  temp_red = 0.975, 
+  max_iter = 100000, 
+  show_display = FALSE
+)
+
+result_mprecrat1 |> 
+  likelihood::write_results("../output/models/mprecrat1.txt")
+
+# Log-normal (prec)
+
+result_mprecrat3 <- anneal(
+  model = mprecrat3, 
+  var = var, 
+  source_data = dprec,
+  par = list(MR = 0.7, Popt = 500, Pb = 2),
+  par_lo = list(MR = 0, Popt = 300, Pb = 0),
+  par_hi = list(MR = 1, Popt = 1000, Pb = 5),
+  pdf = dnorm,
+  dep_var = "rat",
+  initial_temp = 5, 
+  temp_red = 0.975, 
+  max_iter = 100000, 
+  show_display = FALSE
+)
+
+result_mprecrat3 |> 
+  likelihood::write_results("../output/models/mprecrat3.txt")
+
+# Gompertz (prec)
+set.seed(1234)
+
+result_mprecrat5 <- anneal(
+  model = mprecrat5, 
+  par = list(MR = 0.5, Pa = 0.4, Pd = 0.3, Pc = 0.003),
+  par_lo = list(MR = 0, Pa = 0.2, Pd = 0.01, Pc = 0.0001),
+  par_hi = list(MR = 1, Pa = 0.8, Pd = 5, Pc = 0.01), 
+  var = var, 
+  source_data = dprec,
+  pdf = dnorm,
+  dep_var = "rat",
+  initial_temp = 5, 
+  temp_red = 0.975, 
+  max_iter = 100000, 
+  show_display = FALSE
+)
+
+result_mprecrat5 |> 
+  likelihood::write_results("../output/models/mprecrat5.txt")
+
+all_results <-
+  mget(
+    grep("^result_mprecrat", ls(), value = TRUE)
+  ) |>
+  purrr::imap_dfr(~ MLE_results_format(.x, yvar = "rat"), .id = "modelo") |>
+  arrange(aic_cor) |>
+  mutate(modelo = str_remove(modelo, "result_"))
+
+models_results <- all_results |>
+  inner_join(name_models) |>
+  relocate(name_modelo, .after = modelo) |> 
+  mutate(deltaAIC = dAIC(aic_cor))
+
+models_results |> 
+  write_csv("../data/models_ratio_prec_summary.csv")
+```
+
+## Multiplicative models (Temperature and Precipitation)
+$$(ABI:NPP)_i=MR \times g(T_{med}) \times g(PREC) + \epsilon_i$$
+where: 
+
+- $(ABI:NPP)_i$ is the value of the ABI:NPP ratio for each site and year
+- $MR$ is a parameter representing the maximum ABI:NPP ratio (dimensionless)
+- $\epsilon_i$ is the random error for each observation $i$
+- $g(T_{med})$ is a function with values between 0 and 1, which depends on temperature. This function, $g(T_{med})$, can take different forms
+- $g(PREC)$ is a function with values between 0 and 1, which depends on precipitation. This function, $g(PREC)$, can take different forms
+
+```{r}
+d <- dtmed |> inner_join(dprec)
+
+var=list(mean = "predicted", x = "rat", prec = "prec", tmed = "tmed", log = TRUE)  
+
+### Temperature (Log-normal); Precipitation (Log-normal) (**mcombrat1**)
+mcombrat1 <- function(MR, Topt, Tb, Popt, Pb){
+  # log-normal temperature
+  # log-normal prec 
+  tmed_effect <- exp(-0.5*(log(d$tmed/Topt)/Tb)^2) 
+  prec_effect <- exp(-0.5*(log(d$prec/Popt)/Pb)^2)
+  MR * tmed_effect * prec_effect
+}
+
+set.seed(2023)
+
+result_mcombrat1 <- anneal(
+  model = mcombrat1, 
+  var = var, 
+  source_data = d,
+  par = list(MR = 0.7, Topt = 10.5, Tb = 1.5, Popt = 500, Pb = 2), 
+  par_lo = list(MR = 0, Topt = 5, Tb = 0.01, Popt = 300, Pb = 0),
+  par_hi = list(MR = 1, Topt = 20, Tb = 5, Popt = 1000, Pb = 5),
+  pdf = dnorm,
+  dep_var = "rat",
+  initial_temp = 5, 
+  temp_red = 0.975, 
+  max_iter = 200000, 
+  show_display = FALSE
+)
+
+result_mcombrat1 |> 
+  likelihood::write_results("../output/models/mcombrat1.txt")
+
+### Temperature (Log-normal); Precipitation (Gauss) (**mcombrat2**)
+mcombrat2 <- function(MR, Topt, Tb, Popt, Pb){
+  # log-normal temperature
+  # gauss prec 
+  tmed_effect <- exp(-0.5*(log(d$tmed/Topt)/Tb)^2) 
+  prec_effect <- exp(-0.5*((d$prec - Popt)/Pb)^2)
+  MR * tmed_effect * prec_effect
+}
+
+set.seed(2023)
+
+result_mcombrat2 <- anneal(
+  model = mcombrat2, 
+  var = var, 
+  source_data = d,
+  par = list(MR = 0.7, Topt = 10.5, Tb = 1.5, Popt = 500, Pb = 200), 
+  par_lo = list(MR = 0, Topt = 5, Tb = 0.01, Popt = 300, Pb = 0),
+  par_hi = list(MR = 1, Topt = 20, Tb = 5, Popt = 1000, Pb = 600),
+  pdf = dnorm,
+  dep_var = "rat",
+  initial_temp = 5, 
+  temp_red = 0.975, 
+  max_iter = 200000, 
+  show_display = FALSE
+)
+
+result_mcombrat2 |> 
+  likelihood::write_results("../output/models/mcombrat2.txt")
+
+### Temperature (Log-normal); Precipitation (Gompertz) (**mcombrat3**)
+mcombrat3 <- function(MR, Topt, Tb, Pa, Pd, Pc){
+  # log-normal temperature
+  # gompertz prec 
+  tmed_effect <- exp(-0.5*(log(d$tmed/Topt)/Tb)^2) 
+  prec_effect <- Pa * exp(-Pd * exp (-Pc * d$prec))
+  MR * tmed_effect * prec_effect
+}
+
+set.seed(1234)
+result_mcombrat3 <- anneal(
+  model = mcombrat3, 
+  var = var, 
+  source_data = d,
+  par = list(MR = 0.7, Topt = 10.5, Tb = 1.5, Pa = 0.4, Pd = 0.3, Pc = 0.003), 
+  par_lo = list(MR = 0, Topt = 5, Tb = 0.01, Pa = 0.2, Pd = 0.01, Pc = 0.0001),
+  par_hi = list(MR = 1, Topt = 20, Tb = 5, Pa = 0.8, Pd = 5, Pc = 0.01),
+  pdf = dnorm,
+  dep_var = "rat",
+  initial_temp = 5, 
+  temp_red = 0.975, 
+  max_iter = 200000, 
+  show_display = FALSE
+)
+
+result_mcombrat3 |> 
+  likelihood::write_results("../output/models/mcombrat2.txt")
+
+### Temperature (Gauss); Precipitation (Log-normal) (**mcombrat4**)
+mcombrat4 <- function(MR, Topt, Tb, Popt, Pb){
+  # gauss temperature
+  # log-normal prec 
+  tmed_effect <- exp(-0.5*((d$tmed - Topt)/Tb)^2)
+  prec_effect <- exp(-0.5*(log(d$prec/Popt)/Pb)^2)
+  MR * tmed_effect * prec_effect
+}
+
+set.seed(2023)
+
+# change model 
+result_mcombrat4 <- anneal(
+  model = mcombrat4, 
+  var = var, 
+  source_data = d,
+  par = list(MR = 0.7, Topt = 10.5, Tb = 1.5, Popt = 500, Pb = 2), 
+  par_lo = list(MR = 0, Topt = 5, Tb = 0.01, Popt = 300, Pb = 0),
+  par_hi = list(MR = 1, Topt = 20, Tb = 5, Popt = 1000, Pb = 5),
+  pdf = dnorm,
+  dep_var = "rat",
+  initial_temp = 5, 
+  temp_red = 0.975, 
+  max_iter = 200000, 
+  show_display = FALSE
+)
+
+result_mcombrat4 |> 
+  likelihood::write_results("../output/models/mcombrat1.txt")
+
+### Temperature (Gauss); Precipitation (Gauss) (**mcombrat5**)
+mcombrat5 <- function(MR, Topt, Tb, Popt, Pb){
+  # gauss temperature
+  # gauss prec 
+  tmed_effect <- exp(-0.5*((d$tmed - Topt)/Tb)^2) 
+  prec_effect <- exp(-0.5*((d$prec - Popt)/Pb)^2)
+  MR * tmed_effect * prec_effect
+}
+
+set.seed(2023)
+
+result_mcombrat5 <- anneal(
+  model = mcombrat5, 
+  var = var, 
+  source_data = d,
+  par = list(MR = 0.7, Topt = 10.5, Tb = 1.5, Popt = 500, Pb = 200), 
+  par_lo = list(MR = 0, Topt = 5, Tb = 0.01, Popt = 300, Pb = 0),
+  par_hi = list(MR = 1, Topt = 20, Tb = 5, Popt = 1000, Pb = 600),
+  pdf = dnorm,
+  dep_var = "rat",
+  initial_temp = 5, 
+  temp_red = 0.975, 
+  max_iter = 200000, 
+  show_display = FALSE
+)
+
+result_mcombrat5 |> 
+  likelihood::write_results("../output/models/mcombrat5.txt")
+
+### Temperature (Gauss); Precipitation (Gompertz) (**mcombrat6**)
+mcombrat6 <- function(MR, Topt, Tb, Pa, Pd, Pc){
+  # gauss temperature
+  # gompertz prec 
+  tmed_effect <- exp(-0.5*((d$tmed - Topt)/Tb)^2)
+  prec_effect <- Pa * exp(-Pd* exp (-Pc * d$prec))
+  MR * tmed_effect * prec_effect
+}
+
+set.seed(1234)
+
+result_mcombrat6  <- anneal(
+  model = mcombrat6, 
+  var = var, 
+  source_data = d,
+  par = list(MR = 0.7, Topt = 10.5, Tb = 1.5, Pa = 0.4, Pd = 0.3, Pc = 0.003), 
+  par_lo = list(MR = 0, Topt = 5, Tb = 0.01, Pa = 0.2, Pd = 0.01, Pc = 0.0001),
+  par_hi = list(MR = 1, Topt = 20, Tb = 5, Pa = 0.8, Pd = 5, Pc = 0.01),
+  pdf = dnorm,
+  dep_var = "rat",
+  initial_temp = 5, 
+  temp_red = 0.975, 
+  max_iter = 200000, 
+  show_display = FALSE
+)
+
+result_mcombrat6 |> 
+  likelihood::write_results("../output/models/mcombrat6.txt")
+
+### Temperature (Logistic mod.); Precipitation (Log-normal) (**mcombrat7**)
+mcombrat7 <- function(MR, Ta, k, Topt, Popt, Pb){
+  # log-mod temperature
+  # log-normal prec 
+  tmed_effect <- (1-Ta)*(1 / (1 + exp(- k *( dtmed$tmed - Topt)))) + Ta 
+  prec_effect <- exp(-0.5*(log(d$prec/Popt)/Pb)^2)
+  MR * tmed_effect * prec_effect
+}
+
+set.seed(123456)
+
+result_mcombrat7 <- anneal(
+  model = mcombrat7, 
+  var = var, 
+  source_data = d,
+  par = list(MR = 0.7, Ta = 0.09, k = -1, Topt = 10, Popt = 500, Pb = 2), 
+  par_lo = list(MR = 0, Ta = 0, k = -2, Topt = 0, Popt = 300, Pb = 0),
+  par_hi = list(MR = 1, Ta = 0.2, k = 2, Topt = 20, Popt = 1000, Pb = 5),
+  pdf = dnorm,
+  dep_var = "rat",
+  initial_temp = 5, 
+  temp_red = 0.975, 
+  max_iter = 200000, 
+  show_display = FALSE
+)
+
+result_mcombrat7 |> 
+  likelihood::write_results("../output/models/mcombrat7.txt")
+
+### Temperature (Logistic mod.); Precipitation (Gaussian) (**mcombrat8**)
+mcombrat8 <- function(MR, Ta, k, Topt, Popt, Pb){
+  # log-mod temperature
+  # gauss prec 
+  tmed_effect <- (1-Ta)*(1 / (1 + exp(- k *( dtmed$tmed - Topt)))) + Ta 
+  prec_effect <- exp(-0.5*((d$prec - Popt)/Pb)^2)
+  MR * tmed_effect * prec_effect
+}
+
+set.seed(2023)
+
+result_mcombrat8 <- anneal(
+  model = mcombrat8, 
+  var = var, 
+  source_data = d,
+  par = list(MR = 0.7, Ta = 0.09, k = -1, Topt = 10, Popt = 500, Pb = 200), 
+  par_lo = list(MR = 0, Ta = 0, k = -2, Topt = 0, Popt = 300, Pb = 0),
+  par_hi = list(MR = 1, Ta = 0.2, k = 2, Topt = 20, Popt = 1000, Pb = 600),
+  pdf = dnorm,
+  dep_var = "rat",
+  initial_temp = 5, 
+  temp_red = 0.975, 
+  max_iter = 200000, 
+  show_display = FALSE
+)
+
+result_mcombrat8 |> 
+  likelihood::write_results("../output/models/mcombrat8.txt")
+
+### Temperature (Logistic mod.); Precipitation (Gompertz) (**mcombrat9**)
+mcombrat9 <- function(MR, Ta, k, Topt, Pa, Pd, Pc){
+  # log-mod temperature
+  # gompertz prec 
+  tmed_effect <- (1-Ta)*(1 / (1 + exp(- k *( dtmed$tmed - Topt)))) + Ta 
+  prec_effect <- Pa * exp(-Pd * exp (-Pc * d$prec))
+  MR * tmed_effect * prec_effect
+}
+
+set.seed(1234)
+result_mcombrat9  <- anneal(
+  model = mcombrat9, 
+  var = var, 
+  source_data = d,
+  par = list(MR = 0.7, Ta = 0.09, k = -1, Topt = 10, Pa = 0.4, Pd = 0.3, Pc = 0.003), 
+  par_lo = list(MR = 0, Ta = 0, k = -2, Topt = 0, Pa = 0.2, Pd = 0.01, Pc = 0.0001),
+  par_hi = list(MR = 1, Ta = 0.2, k = 2, Topt = 20, Pa = 0.8, Pd = 5, Pc = 0.01),
+  pdf = dnorm,
+  dep_var = "rat",
+  initial_temp = 5, 
+  temp_red = 0.975, 
+  max_iter = 200000, 
+  show_display = FALSE
+)
+
+result_mcombrat9 |> 
+  likelihood::write_results("../output/models/mcombrat9.txt")
+```
+
+
+### Comparison multiplicative models
+- It corresponds with table S4 of the manuscript 
+
+```{r}
+all_results <-
+  mget(
+    grep("^result_mcombrat", ls(), value = TRUE)
+  ) |>
+  purrr::imap_dfr(~ MLE_results_format(.x, yvar = "rat"), .id = "modelo") |>
+  arrange(aic_cor) |>
+  mutate(modelo = str_remove(modelo, "result_"))
+
+name_models <- data.frame(
+  modelo = paste0("mcombrat",c(1:9)),
+  name_modelo = c("Temp (Log-normal) | Prec (Log-normal)", 
+                  "Temp (Log-normal) | Prec (Gaussian)", 
+                  "Temp (Log-normal) | Prec (Gompertz)", 
+                  "Temp (Gaussian) | Prec (Log-normal)", 
+                  "Temp (Gaussian) | Prec (Gaussian)", 
+                  "Temp (Gaussian) | Prec (Gompertz)", 
+                  "Temp (Logistic_Mod) | Prec (Log-normal)", 
+                  "Temp (Logistic_Mod) | Prec (Gaussian)", 
+                  "Temp (Logistic_Mod) | Prec (Gompertz)")
+)
+
+
+# compute delta AIC and add computation time
+models_results <- all_results |>
+  inner_join(name_models) |>
+  relocate(name_modelo, .after = modelo) |> 
+  mutate(deltaAIC = dAIC(aic_cor)) |> 
+  mutate(w = wAIC(deltaAIC)) 
+
+models_results |>
+  write_csv("../data/models_ratio_combined_summary.csv")
+```
+
+```{r}
+m <- models_results
+colnames(m) <- c(
+  "code", "Model name", "Log-Likelihood", "#par",	"AICc", "AIC", "R2", "Slope", 	"RMSE", "Delta-AICc", "Weight AIC"
+)
+
+m |> 
+  kbl(digits = c(0,0,2,0,2,2,3,3,3,3,3), escape = FALSE) |> 
+  kable_styling()
+```
+
+
+
+
+
+
+

@@ -1,0 +1,14 @@
+| Figure Name                     | Figure Numeration | Script Name                    |
+|----------------------------------|-------------------|-------------------------------|
+| mapa.                            | fig 1             |                               |
+| plot_combined_wb_prec_tmed.png  | fig2              | figure_evi_npp_abi_climate.R  |
+| plot_model_selected.jpg          | fig 3             | figure_main_model.R           |
+| plot_compare_abi_npp_evi_sp.png  | fig 4             | figure_abi_npp_evi.R          |
+| ORTOFOFOS                        | fig S1            | mapa QGIS                     |
+| plot_ts_clima.jpg                | fig S2            | figure_ts_climate.R           |
+| plot_drouhgts.jpg                | fig S3            | figure_droughts.R             |
+| plot_evi_abi_npp_ratio_gradient.jpg | fig S4        | figure_evi_abi_npp_avg.R      |
+| plot_ts_dendro_remote.png        | fig S5            | figure_ts_dendro_remote.R     |
+| plot_model_validation.jpg        | fig S6            | model.R                       |
+| plot_evi_lai.jpg                 | fig S7            | figure_evi_lai.R              |
+| soil_ternary.jpg                 | fig S8            | figure_soil.R                 |

@@ -1,0 +1,144 @@
+---
+title: "Study sites"
+format: 
+  dashboard:
+    orientation: columns
+    vertical_layout: fill
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE, message=FALSE, warning=FALSE}
+library('flexdashboard')
+library("leaflet") 
+library("leaflet.extras2")
+library("sf")
+library("tidyverse")
+library("raster")
+library("sp")
+library("lubridate")
+library("leafgl") # add large files points
+# library("simplevis")
+```
+
+```{r}
+# Read life plots
+parcelas_pinos <- st_read("data_raw/geoinfo/geoinfo_dendro_adaptamed_pinus.shp", quiet = TRUE) |> 
+  mutate(Specie = str_replace(Specie, "_", " ")) |> 
+  mutate(elev_code = case_when(
+    elev_code == "low2" ~ "low-Dec",
+    TRUE~elev_code
+  )) |> 
+  unite("sp_elev", c(sp_code, elev_code), remove = FALSE)
+```
+
+
+```{r}
+trees <- icons(
+  iconUrl = c(
+    "Pinus pinaster" = "data/images/pinaster.png",
+    "Pinus nigra" = "data/images/nigra.png",
+    "Pinus sylvestris" = "data/images/sylvestris.png",
+    "Pinus halepensis" = "data/images/halepensis.png"
+  ),
+  iconWidth = 30,  # Ajustar el tamaño del icono
+  iconHeight = 30
+)
+```
+
+
+```{r}
+leaflet(parcelas_pinos) |>
+  addMarkers(
+  #addAwesomeMarkers(
+    popup = ~paste0("<strong>Specie:</strong> ", parcelas_pinos$Specie, "</br>",
+                    "<strong>site code:</strong> ", parcelas_pinos$sp_elev, "</br>",
+                    "<strong>name:</strong> ", parcelas_pinos$site_code, "</br>",
+                    "<strong>elev:</strong> ", parcelas_pinos$elev, "</br>",
+                    "<strong>LAI:</strong> ", parcelas_pinos$LAI,"</br>"),
+    icon = ~icons(iconUrl = trees$iconUrl[Specie], iconWidth = 30, iconHeight = 30)
+    ) |> 
+  addProviderTiles("Esri.WorldImagery", group = "Satellite") |> 
+  addWMSTiles("http://www.ign.es/wms-inspire/pnoa-ma",
+    layers = "OI.OrthoimageCoverage",
+    group = "PNOA Máxima Actualidad",
+    options = WMSTileOptions(
+      format = "image/png", 
+      transparent = FALSE),
+    attribution = 'PNOA cedido por © <a href="http://www.ign.es/ign/main/index.do" target="_blank">Instituto Geográfico Nacional de España</a>'
+  ) |> 
+   addWMSTiles(
+    baseUrl = "https://www.ideandalucia.es/wms/mta100v_2005?",
+    layers = "Curvas_Altimetricas",
+    group = "Curvas Nivel",
+    options = WMSTileOptions(
+      format = "image/png", 
+      transparent = TRUE),
+    attribution = '<a href="http://www.juntadeandalucia.es/institutodeestadisticaycartografia" target="_blank">Instituto de Estadística y Cartografía de Andalucía</a>'
+  ) |> 
+  addWMSTiles(
+    baseUrl = "http://www.ideandalucia.es/wms/mdt_2005?",
+    layers = "Sombreado_10",
+    group = "Hillshade",
+    options = WMSTileOptions(
+      format = "image/png", 
+      transparent = TRUE),
+    attribution = '<a href="http://www.juntadeandalucia.es/institutodeestadisticaycartografia" target="_blank">Instituto de Estadística y Cartografía de Andalucía</a>'
+  ) |>
+  addWMSTiles(
+    baseUrl = "http://www.ign.es/wms-inspire/ign-base?",
+    layers = "IGNBaseTodo",
+    group = "Basemap",
+    attribution = '© <a href="http://www.ign.es/ign/main/index.do" target="_blank">Instituto Geográfico Nacional de España</a>'
+  ) |>  
+  addWMSTiles("http://www.ideandalucia.es/services/toporaster10/wms?",
+    layers = "toporaster10",
+    group = "Topographical",
+    options = WMSTileOptions(
+      format = "image/png", 
+      transparent = FALSE),
+    attribution = '<a href="http://www.juntadeandalucia.es/institutodeestadisticaycartografia" target="_blank">Instituto de Estadística y Cartografía de Andalucía</a>'
+  ) |> 
+  addWMSTiles("http://www.juntadeandalucia.es/medioambiente/mapwms/REDIAM_Ortofoto_Andalucia_1956?",
+    layers = "ortofoto_1956",
+    group = "orto1956",
+    options = WMSTileOptions(
+      format = "image/png", 
+      transparent = FALSE),
+    attribution = '<a href="http://www.juntadeandalucia.es/institutodeestadisticaycartografia" target="_blank">Instituto de Estadística y Cartografía de Andalucía</a>'
+  ) |> 
+  addWMSTiles("http://www.juntadeandalucia.es/medioambiente/mapwms/REDIAM_Ortofoto_BN_1977_83?",
+    layers = "orto_BN_77_83",
+    group = "orto77-78",
+    options = WMSTileOptions(
+      format = "image/png", 
+      transparent = FALSE),
+    attribution = '<a href="http://www.juntadeandalucia.es/institutodeestadisticaycartografia" target="_blank">Instituto de Estadística y Cartografía de Andalucía</a>'
+  ) |> 
+  addWMSTiles("https://www.juntadeandalucia.es/medioambiente/mapwms/REDIAM_Ortofoto_PAN_Andalucia_84_85",
+    layers = "orto_1984_85",
+    group = "orto84-85",
+    options = WMSTileOptions(
+      format = "image/png", 
+      transparent = FALSE),
+    attribution = '<a href="http://www.juntadeandalucia.es/institutodeestadisticaycartografia" target="_blank">Instituto de Estadística y Cartografía de Andalucía</a>'
+  ) |> 
+  addWMSTiles("https://www.ideandalucia.es/wms/ortofoto2001",
+    layers = "ORTO_2001",
+    group = "orto2001",
+    options = WMSTileOptions(
+      format = "image/png", 
+      transparent = FALSE),
+    attribution = '<a href="http://www.juntadeandalucia.es/institutodeestadisticaycartografia" target="_blank">Instituto de Estadística y Cartografía de Andalucía</a>'
+  )  |> 
+  addLayersControl(
+    position = "bottomright",
+    baseGroups = c("Basemap", "PNOA Máxima Actualidad", "Satellite", "Hillshade", "Topographical", "orto1956", "orto77-78", "orto84-85", "orto2001"),
+    overlayGroups = c("Curvas Nivel"), 
+    options = layersControlOptions(collapsed = TRUE)
+  ) |> 
+  hideGroup("Curvas Nivel") |> 
+  addMiniMap()
+
+
+```

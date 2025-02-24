@@ -1,0 +1,12 @@
+---
+title: "R packages used"
+format: html
+bibliography: grateful-refs.bib
+---
+
+For all analysis and figures we used the following R packages: 
+
+```{r}
+library(grateful)
+cite_packages(output = "paragraph", out.dir = ".")
+```

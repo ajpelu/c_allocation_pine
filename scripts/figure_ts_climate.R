@@ -6,7 +6,6 @@ library(Kendall)
 library(trend)
 
 avg_yearly <- read_csv("data/climate_avg_yearly.csv") |> 
-  mutate(elev_code = fct_recode(elev_code, `low-Dec` = "low2")) |> 
   mutate(elev_code = fct_relevel(elev_code, "low-Dec","low", "medium", "high"))
 
 aux <- avg_yearly |> 

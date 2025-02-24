@@ -8,14 +8,11 @@ source("scripts/aux.R")
 options(scipen = 999)
 
 # Read data
-## ABI
+## A
 abi <- read_csv("data/abi.csv") |> 
   mutate(se = NA, sd = NA, variable = "abi")
 
 ## EVI Landsat 
-
-
-
 evi_landsat <- read_csv("data/iv_landsat.csv") |>
   filter(iv == "evi") |>
   dplyr::select(year, sp_code, elev_code, sp_elev, mean, sd, se) |>

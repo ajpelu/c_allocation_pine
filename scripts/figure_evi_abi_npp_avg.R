@@ -12,10 +12,6 @@ source("scripts/aux.R")
 abi <- read_csv("data/abi.csv") |> 
   mutate(se = NA, sd = NA, variable = "abi")
 
-## EVI Landsat 
-
-
-
 
 annual_pet <- read_csv("data/spei_climate.csv") |> 
   dplyr::select(sp_elev, year, monthly_pet, monthly_tmed, monthly_prec) |> 
@@ -25,10 +21,6 @@ annual_pet <- read_csv("data/spei_climate.csv") |>
             tmed = mean(monthly_tmed, na.rm = TRUE)) |> 
   rowwise() |> 
   mutate(water_balance = prec - pet)
-
-abi <- read_csv("data/abi.csv") |> 
-  rename(mean = IBT_ag_m2) |> 
-  mutate(se = NA, sd = NA, variable = "abi") 
 
 evi_landsat <- read_csv("data/iv_landsat.csv") |> 
   filter(iv == "evi") |> 
@@ -41,14 +33,14 @@ npp <- read_csv("data/npp_modis.csv") |>
   dplyr::select(year, sp_code, elev_code, sp_elev, mean, sd, se, variable) 
 
 
-# Compute ratio abi:npp
-ratio <- 
-  (npp |> rename(npp = mean) |> 
-     dplyr::select(-se, -sd, -variable) |> ungroup()) |> 
-  inner_join(
-    abi |> rename(abi = mean) |> dplyr::select(-se, -sd, -variable) |> ungroup()
-  ) |> rowwise() |> 
-  mutate(mean = abi/npp, se = NA, sd = NA, variable = "ratio")
+# # Compute ratio abi:npp
+# ratio <- 
+#   (npp |> rename(npp = mean) |> 
+#      dplyr::select(-se, -sd, -variable) |> ungroup()) |> 
+#   inner_join(
+#     abi |> rename(abi = mean) |> dplyr::select(-se, -sd, -variable) |> ungroup()
+#   ) |> rowwise() |> 
+#   mutate(mean = abi/npp, se = NA, sd = NA, variable = "ratio")
 
 df <- bind_rows(
   abi, evi_landsat, npp, ratio) |> 
