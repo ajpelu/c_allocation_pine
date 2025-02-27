@@ -1,13 +1,13 @@
 # Readme 
 
 
-## Optimal carbon partitioning drives sink potential dynamics of afforestation under climate change
+## Code for "Optimal carbon partitioning drives sink potential dynamics of afforestation under climate change"
 
 [![minimal R version](https://img.shields.io/badge/R%3E%3D-4.2.1-brightgreen.svg)](https://cran.r-project.org/) [![Licence](https://img.shields.io/github/license/mashape/apistatus.svg)](http://choosealicense.com/licenses/mit/) [![DOI](https://zenodo.org/badge/926511852.svg)](https://doi.org/10.5281/zenodo.14918748)
 
 
 This repository contains all information and results for the paper 
-*Optimal carbon partitioning drives sink potential dynamics of afforestation under climate change*. The paper have been submitted to *Nature Climate Change*
+*Optimal carbon partitioning drives sink potential dynamics of afforestation under climate change*. The paper have been submitted to *Nature Plants*
 
 ## Website
 You can see the website of the repo at: https://ajpelu.github.io/c_allocation_pine 
@@ -35,5 +35,5 @@ This study is a contribution to projects:
 ## How to cite: 
 
 ### Repository: 
-Pérez-Luque AJ; Martín-Benit D; Zamora R & Gea-Izquierdo G. 2022. https://doi.org/10.5281/zenodo.7350714
+Pérez-Luque AJ; Martín-Benit D; Zamora R & Gea-Izquierdo G. 2025. Code for *Optimal carbon partitioning drives sink potential dynamics of afforestation under climate change*. https://doi.org/10.5281/zenodo.7350714
 

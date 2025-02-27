@@ -101,7 +101,7 @@ result_mcombrat7 <- anneal(
 result_mcombrat7 |> likelihood::write_results("../output/models/multiplicative_tmed_logisticmod_prec_lognormal.txt")
 ```
 
-### Validation Plot
+### Validation Plot 
 - This figure corresponds to figure S6 in the manuscript.
 - An high-resolution version of this figure is available [here](../output/plot_model_validation.jpg).
 
