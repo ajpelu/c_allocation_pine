@@ -21,7 +21,7 @@ author:
 This repository contains all code for the paper 
 *Optimal carbon partitioning drives sink potential dynamics of afforestation under climate change* 
 
-The paper have been submitted to *One Earth*.
+The paper have been submitted to *Ecology Letters*.
 
 
 ## Analysis 
