@@ -11,7 +11,7 @@ editor_options:
 ---
 
 - This figure corresponds to figure 4 in the manuscript.
-- An high-resolution version of this figure is available [here](output/plot_compare_abi_npp_evi_sp.png).
+- An high-resolution version of this figure is available [here](../output/plot_compare_abi_npp_evi_sp.png).
 
 
 ```{r}
