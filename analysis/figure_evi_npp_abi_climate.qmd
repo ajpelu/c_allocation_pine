@@ -11,7 +11,7 @@ editor_options:
 ---
 
 - This figure corresponds to figure 2 in the manuscript.
-- An high-resolution version of this figure is available [here](output/plot_combined_wb_prec_tmed.png).
+- An high-resolution version of this figure is available [here](../output/plot_combined_wb_prec_tmed.png).
 
 
 ```{r}
