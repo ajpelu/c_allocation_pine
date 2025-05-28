@@ -6,6 +6,8 @@ format:
 execute:
   message: false
   warning: false
+editor_options: 
+  chunk_output_type: console
 ---
 
 - This figure corresponds to figure 2 in the manuscript.
@@ -23,18 +25,20 @@ execute:
 library(tidyverse)
 library(ggh4x)
 library(patchwork)
-source("../scripts/aux.R")
-
+library(here)
+library(glue)
+library(broom)
+source(here::here("scripts/aux.R"))
 
 
 # Read data
 ## ABI
-abi <- read_csv("../data/abi.csv") |> 
+abi <- read_csv(here::here("data/abi.csv")) |> 
   mutate(se = NA, sd = NA, variable = "abi") |> 
   rename(mean = abi)
 
 ## annual pet
-annual_pet <- read_csv("../data/spei_climate.csv") |> 
+annual_pet <- read_csv(here::here("data/spei_climate.csv")) |> 
   dplyr::select(sp_elev, year, monthly_pet, monthly_tmed, monthly_prec) |> 
   group_by(sp_elev, year) |>
   summarise(pet = sum(monthly_pet), 
@@ -45,13 +49,13 @@ annual_pet <- read_csv("../data/spei_climate.csv") |>
 
 
 ## EVI Landsat 
-evi_landsat <- read_csv("../data/iv_landsat.csv") |>
+evi_landsat <- read_csv(here::here("data/iv_landsat.csv")) |>
   filter(iv == "evi") |>
   dplyr::select(year, sp_code, elev_code, sp_elev, mean, sd, se) |>
   mutate(variable = "evi_landsat")
 
 ## NPP MODIS
-npp <- read_csv("../data/npp_modis.csv") |>
+npp <- read_csv(here::here("data/npp_modis.csv")) |>
   rename(mean = npp) |>
   mutate(se = NA, sd = NA, variable = "npp") |>
   dplyr::select(year, sp_code, elev_code, sp_elev, mean, sd, se, variable)
@@ -80,26 +84,76 @@ df_plot <- df |>
                                    "ABI~(g~C~m^2~year^{-1})"))
 
 
-## Linear regressions for plot
-l <- df_plot |> 
+
+
+# Generate tibble with y max values. Caution, check there are equal to ylimits specified below for plot
+ymax_panel <- tibble(
+   y_variable = c("evi_landsat", "npp", "abi"),
+   y_max = c(0.5, 1250, 700))
+
+# Generate another tibble with linear regression
+lr <- df_plot |> 
   filter(climate_variable != "pet") |> 
-  group_by(y_variable,climate_variable, sp_code) |> 
-  group_modify(
-    ~ broom::tidy(lm(mean_y ~ mean_climate, data = .x))
-  ) |>
-  filter(term != "(Intercept)") |> 
+  group_by(y_variable, climate_variable, sp_code) |> 
+  group_modify(~ {
+    # Ajusta el modelo
+    mod <- lm(mean_y ~ mean_climate, data = .x)
+    
+    # Tidy con coeficientes
+    tidy_df <- broom::tidy(mod)
+    
+    # Añade R2 a cada fila
+    tidy_df$r.squared <- broom::glance(mod)$r.squared
+    
+    tidy_df
+  }) |>
   mutate(p = case_when(
     p.value < 0.001 ~ "<0.001",
     p.value >= 0.001 ~ as.character(round(p.value, 3))
   )) |> 
   mutate(sig = case_when(
     p.value < 0.001 ~ "sig",
-    p.value >= 0.001 ~ "no sig"  
+    p.value >= 0.001 ~ "no sig"
+  ))
+
+# Generate equations 
+l <- lr |> 
+  left_join(
+    lr |> filter(term == "(Intercept)") |> 
+      select(y_variable, climate_variable, sp_code, intercept = estimate), 
+    by = c("y_variable", "climate_variable", "sp_code")
+  ) |> 
+  mutate(
+    eq_text = if_else(
+      sig == "sig" & term == "mean_climate",
+      glue("y = {round(estimate, 2)}x {ifelse(intercept < 0, '-', '+')} {round(abs(intercept), 2)}; R² = {round(r.squared, 2)}"),
+     NA
+    )
+  ) |> 
+  filter(term != "(Intercept)") |> 
+  mutate(Specie = paste0("P. ", sp_code)) |> 
+  mutate(y_variable2 = case_when(
+    y_variable == "evi_landsat" ~ "EVI[Landsat]",
+    y_variable == "npp" ~ "NPP[MODIS]~(g~C~m^2~year^{-1})",
+    y_variable == "abi" ~ "ABI~(g~C~m^2~year^{-1})"
   )) 
+
+# Filter equations 
+l_eq <- l |> filter(!is.na(eq_text)) |> 
+  left_join(ymax_panel, by = "y_variable") |> 
+  group_by(y_variable, climate_variable) |> 
+  mutate(
+    offset_y = row_number() * 0.05 * y_max,  # Ajusta el offset según sea necesario
+    y = y_max - offset_y
+  ) |> 
+  ungroup()
+
+
+
 
 
 df_plot <- 
-  df_plot |> inner_join(
+  df_plot |> left_join(
     l |> dplyr::select(y_variable, climate_variable, sp_code, p, sig)) |> 
   mutate(sp_code = fct_relevel(sp_code, "halepensis","pinaster", "nigra", "sylvestris")) |> 
   mutate(Specie = fct_relevel(Specie, "P. halepensis","P. pinaster", "P. nigra", "P. sylvestris"))
@@ -208,6 +262,10 @@ plot_prec <-
             aes(x = x, y = y, label = label),
             vjust = 1.2, hjust = -1.2, size = 5, 
             fontface = "bold", inherit.aes = FALSE) +
+  geom_text(data = l_eq |> filter(climate_variable == "prec"), 
+            aes(x = Inf, y = y, label = eq_text), 
+            hjust = 1.1, vjust = 1.1, size = 2.75,
+            fontface = "bold", show.legend = FALSE) +
   guides(
     colour = guide_legend(override.aes = list(size = 4)), 
     shape = guide_legend(override.aes = list(size = 4)), 
@@ -289,6 +347,10 @@ plot_tmed <-
             aes(x = x, y = y, label = label),
             vjust = 1.2, hjust = -1.2, size = 5, 
             fontface = "bold", inherit.aes = FALSE) +
+  geom_text(data = l_eq |> filter(climate_variable == "tmed"),
+            aes(x = Inf, y = y, label = eq_text, colour = Specie), 
+            hjust = 1.1, vjust = 1.1, size = 2.75, inherit.aes = FALSE,
+            fontface = "bold", show.legend = FALSE) + 
   geom_line(data = df_pred_tmed_evi,
             aes(x = mean_climate, y = mean_y), 
             linewidth = main_line_width, 
@@ -325,8 +387,11 @@ plot_wb <-
   geom_text(data = (letras |> filter(tipo == "wb")), 
             aes(x = x, y = y, label = label),
             vjust = 1.2, hjust = -1.2, size = 5, 
-            fontface = "bold", inherit.aes = FALSE)
-
+            fontface = "bold", inherit.aes = FALSE) +
+  geom_text(data = l_eq |> filter(climate_variable == "water_balance"),
+            aes(x = Inf, y = y, label = eq_text, colour = Specie), 
+            hjust = 1.1, vjust = 1.1, size = 2.75, inherit.aes = FALSE,
+            fontface = "bold", show.legend = FALSE) 
 
 wb_prec_tmed <- plot_prec / plot_tmed /plot_wb  &
   guides(
@@ -344,7 +409,7 @@ wb_prec_tmed
 
 ggsave(
   wb_prec_tmed, 
-  file = "../output/plot_combined_wb_prec_tmed.png",
+  file = here::here("output/plot_combined_wb_prec_tmed.png"),
   dpi = 400,
   width = 7.09*1.3, height = 7.09*1.3
 )

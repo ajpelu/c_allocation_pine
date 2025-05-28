@@ -6,6 +6,8 @@ format:
 execute:
   message: false
   warning: false
+editor_options: 
+  chunk_output_type: console
 ---
 
 - This figure corresponds to figure 4 in the manuscript.
@@ -22,23 +24,26 @@ execute:
 library(tidyverse)
 library(boot)
 library(patchwork)
-source("../scripts/aux.R")
+library(here)
+library(glue)
+library(broom)
+source(here::here("scripts/aux.R"))
 
 options(scipen = 999)
 
 # Read data
 ## A
-abi <- read_csv("../data/abi.csv") |> 
+abi <- read_csv(here::here("data/abi.csv")) |> 
   mutate(se = NA, sd = NA, variable = "abi") |> 
   rename(mean = abi)
 
 ## EVI Landsat 
-evi_landsat <- read_csv("../data/iv_landsat.csv") |>
+evi_landsat <- read_csv(here::here("data/iv_landsat.csv")) |>
   filter(iv == "evi") |>
   dplyr::select(year, sp_code, elev_code, sp_elev, mean, sd, se) |>
   mutate(variable = "evi_landsat")
 
-npp <- read_csv("../data/npp_modis.csv") |>
+npp <- read_csv(here::here("data/npp_modis.csv")) |>
   rename(mean = npp) |>
   mutate(se = NA, sd = NA, variable = "npp") |>
   dplyr::select(year, sp_code, elev_code, sp_elev, mean, sd, se, variable)
@@ -98,13 +103,18 @@ pred_df_abi_npp <- data.frame(
   ci_upper = ci_upper
 )
 
-
 labi_npp <- abi_npp |> 
   group_by(sp_code) |> 
-  group_modify(
-    ~ broom::tidy(lm(abi ~ npp, data = .x))
-  ) |> 
-  filter(term != "(Intercept)") |> 
+  group_modify(~ {
+    # Ajusta el modelo
+    mod <- lm(abi ~ npp, data = .x)
+    # Tidy con coeficientes
+    tidy_df <- broom::tidy(mod)
+    # Añade R2 a cada fila
+    tidy_df$r.squared <- broom::glance(mod)$r.squared
+    
+    tidy_df
+  }) |> 
   mutate(p = case_when(
     p.value < 0.001 ~ "<0.001",
     p.value >= 0.001 ~ as.character(round(p.value, 3))
@@ -114,10 +124,31 @@ labi_npp <- abi_npp |>
     p.value >= 0.001 ~ "no sig"  
   )) 
 
+y_max_abi <- 450
+
+labi_npp_eq <- labi_npp |> 
+  left_join(
+    labi_npp |> filter(term == "(Intercept)") |> 
+      dplyr::select(sp_code, intercept = estimate)
+  ) |> 
+  mutate(
+    eq_text = if_else(
+      sig == "sig", 
+      glue("y = {round(estimate, 2)}x {ifelse(intercept < 0, '-', '+')} {round(abs(intercept), 2)}; R² = {round(r.squared, 2)}"),
+     NA
+    )
+  ) |> 
+  filter(term != "(Intercept)") |> 
+  arrange(desc(sig)) |> # ordenar por eq 
+  rowid_to_column("id") |> 
+  mutate(offset_y = id * 0.05 * y_max_abi, 
+         y_max = y_max_abi - offset_y) |> 
+  mutate(Specie = paste0("P. ", sp_code))
+
 
 abi_npp <- 
   abi_npp |> inner_join(
-    labi_npp|> dplyr::select(sp_code, p, sig))
+    labi_npp_eq|> dplyr::select(sp_code, p, sig))
 
 
 ## ABI vs EVI
@@ -162,12 +193,34 @@ pred_df_abi_evi <- data.frame(
 )
 
 
+# labi_evi <- abi_evi |> 
+#   group_by(sp_code) |> 
+#   group_modify(
+#     ~ broom::tidy(lm(abi ~ evi_landsat, data = .x))
+#   ) |> 
+#   filter(term != "(Intercept)") |> 
+#   mutate(p = case_when(
+#     p.value < 0.001 ~ "<0.001",
+#     p.value >= 0.001 ~ as.character(round(p.value, 3))
+#   )) |> 
+#   mutate(sig = case_when(
+#     p.value < 0.001 ~ "sig",
+#     p.value >= 0.001 ~ "no sig"  
+#   )) 
+
+
 labi_evi <- abi_evi |> 
   group_by(sp_code) |> 
-  group_modify(
-    ~ broom::tidy(lm(abi ~ evi_landsat, data = .x))
-  ) |> 
-  filter(term != "(Intercept)") |> 
+  group_modify(~ {
+    # Ajusta el modelo
+    mod <- lm(abi ~ evi_landsat, data = .x)
+    # Tidy con coeficientes
+    tidy_df <- broom::tidy(mod)
+    # Añade R2 a cada fila
+    tidy_df$r.squared <- broom::glance(mod)$r.squared
+    
+    tidy_df
+  }) |> 
   mutate(p = case_when(
     p.value < 0.001 ~ "<0.001",
     p.value >= 0.001 ~ as.character(round(p.value, 3))
@@ -177,9 +230,32 @@ labi_evi <- abi_evi |>
     p.value >= 0.001 ~ "no sig"  
   )) 
 
+
+y_max_abi <- 650
+
+labi_evi_eq <- labi_evi |> 
+  left_join(
+    labi_npp |> filter(term == "(Intercept)") |> 
+      dplyr::select(sp_code, intercept = estimate)
+  ) |> 
+  mutate(
+    eq_text = if_else(
+      sig == "sig", 
+      glue("y = {round(estimate, 2)}x {ifelse(intercept < 0, '-', '+')} {round(abs(intercept), 2)}; R² = {round(r.squared, 2)}"),
+      NA
+    )
+  ) |> 
+  filter(term != "(Intercept)") |> 
+  arrange(desc(sig)) |> # ordenar por eq 
+  rowid_to_column("id") |> 
+  mutate(offset_y = id * 0.05 * y_max_abi, 
+         y_max = y_max_abi - offset_y) |> 
+  mutate(Specie = paste0("P. ", sp_code))
+
+
 abi_evi <- 
   abi_evi |> inner_join(
-    labi_evi |> dplyr::select(sp_code, p, sig))
+    labi_evi_eq |> dplyr::select(sp_code, p, sig))
 
 ## NPP vs EVI
 npp_evi <- df_index |>
@@ -228,10 +304,16 @@ pred_df_npp_evi <- data.frame(
 
 lnpp_evi <- npp_evi |> 
   group_by(sp_code) |> 
-  group_modify(
-    ~ broom::tidy(lm(npp ~ evi_landsat, data = .x))
-  ) |> 
-  filter(term != "(Intercept)") |> 
+  group_modify(~ {
+    # Ajusta el modelo
+    mod <- lm(npp ~ evi_landsat, data = .x)
+    # Tidy con coeficientes
+    tidy_df <- broom::tidy(mod)
+    # Añade R2 a cada fila
+    tidy_df$r.squared <- broom::glance(mod)$r.squared
+    
+    tidy_df
+  }) |> 
   mutate(p = case_when(
     p.value < 0.001 ~ "<0.001",
     p.value >= 0.001 ~ as.character(round(p.value, 3))
@@ -241,9 +323,32 @@ lnpp_evi <- npp_evi |>
     p.value >= 0.001 ~ "no sig"  
   )) 
 
+y_max_npp <- 1050
+
+lnpp_evi_eq <- lnpp_evi |> 
+  left_join(
+    lnpp_evi |> filter(term == "(Intercept)") |> 
+      dplyr::select(sp_code, intercept = estimate)
+  ) |> 
+  mutate(
+    eq_text = if_else(
+      sig == "sig", 
+      glue("y = {round(estimate, 2)}x {ifelse(intercept < 0, '-', '+')} {round(abs(intercept), 2)}; R² = {round(r.squared, 2)}"),
+      NA
+    )
+  ) |> 
+  filter(term != "(Intercept)") |> 
+  arrange(desc(sig)) |> # ordenar por eq 
+  rowid_to_column("id") |> 
+  mutate(offset_y = id * 0.05 * y_max_npp, 
+         y_max = offset_y) |> 
+  mutate(Specie = paste0("P. ", sp_code))
+
+  
+  
 npp_evi <- 
   npp_evi |> inner_join(
-    lnpp_evi |> dplyr::select(sp_code, p, sig))
+    lnpp_evi_eq |> dplyr::select(sp_code, p, sig))
 
 
 
@@ -324,8 +429,12 @@ p_sp <- (
      scale_linetype_manual(values = lines_lm, guide = "none") +
      scale_x_continuous(
        limits = c(150,1050), 
-       breaks = c(150,300,450,600,750,900,1050))+
-     annotate(geom = "text", label = "a", x = 150, y = Inf, hjust = .2, vjust = 1.5, size = 7, fontface = "bold")) +
+       breaks = c(150,300,450,600,750,900,1050)) +
+  annotate(geom = "text", label = "a", x = 150, y = Inf, hjust = .2, vjust = 1.5, size = 7, fontface = "bold") +
+  geom_text(data = labi_npp_eq |> filter(!is.na(eq_text)), 
+            aes(x = 600, y = y_max, label = eq_text, colour = Specie), 
+            hjust = 1.1, vjust = 1.1, size = 2.75,
+            fontface = "bold", show.legend = FALSE)) +
   (plot_abi_evi + 
      geom_smooth(aes(linetype = sig, group = Specie, colour = Specie), 
                  linewidth = partial_lines_width, method = "lm", se = FALSE) +
@@ -333,7 +442,11 @@ p_sp <- (
      scale_x_continuous(
        limits = c(0.1,0.5), 
        breaks = c(0.1, 0.2, 0.3, 0.4, 0.5)) +
-     annotate(geom = "text", label = "b", x = .1, y = Inf, hjust = .2, vjust = 1.5, size = 7, fontface = "bold")) +
+     annotate(geom = "text", label = "b", x = .1, y = Inf, hjust = .2, vjust = 1.5, size = 7, fontface = "bold") +
+  geom_text(data = labi_evi_eq |> filter(!is.na(eq_text)), 
+            aes(x = Inf, y = y_max, label = eq_text, colour = Specie), 
+            hjust = 1.1, vjust = 1.1, size = 2.75,
+            fontface = "bold", show.legend = FALSE)) +
   (plot_npp_evi + 
      geom_smooth(aes(linetype = sig, group = Specie, colour = Specie), 
                  linewidth = partial_lines_width, method = "lm", se = FALSE) +
@@ -344,7 +457,11 @@ p_sp <- (
      scale_y_continuous(
        limits = c(0,1050), 
        breaks = c(0,150,300,450,600,750,900,1050)) +
-     annotate(geom = "text", label = "c", x = .1, y = Inf, hjust = .2, vjust = 1.5, size = 7, fontface = "bold")) 
+     annotate(geom = "text", label = "c", x = .1, y = Inf, hjust = .2, vjust = 1.5, size = 7, fontface = "bold") +
+  geom_text(data = lnpp_evi_eq |> filter(!is.na(eq_text)), 
+            aes(x = 0.5, y = y_max, label = eq_text, colour = Specie), 
+            hjust = 1.1, vjust = 1.1, size = 2.75,
+            fontface = "bold", show.legend = FALSE)) 
   ) & theme(legend.position = "bottom", legend.text = element_text(size = 14))
 
 compare_plot_sp <- p_sp + plot_layout(guides = "collect") & guides(
@@ -355,11 +472,12 @@ compare_plot_sp
 ```
 
 
+
 ```{r}
 #| echo: false
 ggsave(
   compare_plot_sp,
-  file = "../output/plot_compare_abi_npp_evi_sp.png",
+  file = here::here("output/plot_compare_abi_npp_evi_sp.png"),
   dpi = 400,
   width = 7.09*1.9, height = 7.09*.8
 )
@@ -371,9 +489,6 @@ ggsave(
 #   width = 7.09*2.2, height = 7.09*1.8/2
 # )
 ```
-
-
-
 
 
 
