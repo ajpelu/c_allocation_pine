@@ -31,19 +31,19 @@ The paper have been submitted to *Global Change Biology*.
 
 ## Figures 
 - [Figure 1](output/figure1.png)
-- [Figure 2](analysis/figure_evi_npp_abi_climate.qmd)
-- [Figure 3](analysis/figure_main_model.qmd)
-- [Figure 4](analysis/figure_abi_npp_evi.qmd)
+- [Figure 2](analysis/figure_evi_abi_npp_avg.qmd)
+- [Figure 3](analysis/figure_ts_dendro_remote.qmd)
+- [Figure 4](analysis/figure_evi_npp_abi_climate.qmd)
+- [Figure 5](analysis/figure_main_model.qmd)
+- [Figure 6](analysis/figure_abi_npp_evi.qmd)
 
 ## Supplementary 
 - [Figure S1](output/figureS1.jpg)
 - [Figure S2](analysis/figure_ts_climate.qmd)
 - [Figure S3](analysis/figure_droughts.qmd)
-- [Figure S4](analysis/figure_evi_abi_npp_avg.qmd)
-- [Figure S5](analysis/figure_ts_dendro_remote.qmd)
-- [Figure S6](analysis/model_selected.qmd#validation-plot)
-- [Figure S7](analysis/figure_evi_lai.qmd)
-- [Figure S8](analysis/figure_soil.qmd)
+- [Figure S4](analysis/figure_evi_lai.qmd)
+- [Figure S5](analysis/model_selected.qmd#validation-plot)
+- [Figure S6](analysis/figure_soil.qmd)
 
 ## Spatial distribution of the study sites 
 - [Map](spatial.qmd)

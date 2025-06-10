@@ -204,9 +204,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="figures">Figures</h2>
 <ul>
 <li><a href="output/figure1.png">Figure 1</a></li>
-<li><a href="./analysis/figure_evi_npp_abi_climate.html">Figure 2</a></li>
-<li><a href="./analysis/figure_main_model.html">Figure 3</a></li>
-<li><a href="./analysis/figure_abi_npp_evi.html">Figure 4</a></li>
+<li><a href="./analysis/figure_evi_abi_npp_avg.html">Figure 2</a></li>
+<li><a href="./analysis/figure_ts_dendro_remote.html">Figure 3</a></li>
+<li><a href="./analysis/figure_evi_npp_abi_climate.html">Figure 4</a></li>
+<li><a href="./analysis/figure_main_model.html">Figure 5</a></li>
+<li><a href="./analysis/figure_abi_npp_evi.html">Figure 6</a></li>
 </ul>
 </section>
 <section id="supplementary" class="level2">
@@ -215,11 +217,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><a href="output/figureS1.jpg">Figure S1</a></li>
 <li><a href="./analysis/figure_ts_climate.html">Figure S2</a></li>
 <li><a href="./analysis/figure_droughts.html">Figure S3</a></li>
-<li><a href="./analysis/figure_evi_abi_npp_avg.html">Figure S4</a></li>
-<li><a href="./analysis/figure_ts_dendro_remote.html">Figure S5</a></li>
-<li><a href="./analysis/model_selected.html#validation-plot">Figure S6</a></li>
-<li><a href="./analysis/figure_evi_lai.html">Figure S7</a></li>
-<li><a href="./analysis/figure_soil.html">Figure S8</a></li>
+<li><a href="./analysis/figure_evi_lai.html">Figure S4</a></li>
+<li><a href="./analysis/model_selected.html#validation-plot">Figure S5</a></li>
+<li><a href="./analysis/figure_soil.html">Figure S6</a></li>
 </ul>
 </section>
 <section id="spatial-distribution-of-the-study-sites" class="level2">
@@ -747,19 +747,19 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="fu">## Figures </span></span>
 <span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Figure 1</span><span class="co">](output/figure1.png)</span></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Figure 2</span><span class="co">](analysis/figure_evi_npp_abi_climate.qmd)</span></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Figure 3</span><span class="co">](analysis/figure_main_model.qmd)</span></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Figure 4</span><span class="co">](analysis/figure_abi_npp_evi.qmd)</span></span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="fu">## Supplementary </span></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Figure S1</span><span class="co">](output/figureS1.jpg)</span></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Figure S2</span><span class="co">](analysis/figure_ts_climate.qmd)</span></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Figure S3</span><span class="co">](analysis/figure_droughts.qmd)</span></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Figure S4</span><span class="co">](analysis/figure_evi_abi_npp_avg.qmd)</span></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Figure S5</span><span class="co">](analysis/figure_ts_dendro_remote.qmd)</span></span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Figure S6</span><span class="co">](analysis/model_selected.qmd#validation-plot)</span></span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Figure S7</span><span class="co">](analysis/figure_evi_lai.qmd)</span></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Figure S8</span><span class="co">](analysis/figure_soil.qmd)</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Figure 2</span><span class="co">](analysis/figure_evi_abi_npp_avg.qmd)</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Figure 3</span><span class="co">](analysis/figure_ts_dendro_remote.qmd)</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Figure 4</span><span class="co">](analysis/figure_evi_npp_abi_climate.qmd)</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Figure 5</span><span class="co">](analysis/figure_main_model.qmd)</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Figure 6</span><span class="co">](analysis/figure_abi_npp_evi.qmd)</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="fu">## Supplementary </span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Figure S1</span><span class="co">](output/figureS1.jpg)</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Figure S2</span><span class="co">](analysis/figure_ts_climate.qmd)</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Figure S3</span><span class="co">](analysis/figure_droughts.qmd)</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Figure S4</span><span class="co">](analysis/figure_evi_lai.qmd)</span></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Figure S5</span><span class="co">](analysis/model_selected.qmd#validation-plot)</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Figure S6</span><span class="co">](analysis/figure_soil.qmd)</span></span>
 <span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="fu">## Spatial distribution of the study sites </span></span>
 <span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Map</span><span class="co">](spatial.qmd)</span></span>
