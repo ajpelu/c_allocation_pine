@@ -220,7 +220,7 @@ letras <- data.frame(
     c("EVI[Landsat]", "NPP[MODIS]~(g~C~m^2~year^{-1})", "ABI~(g~C~m^2~year^{-1})"),
     times = 3
   ),
-  label = c("a", "b", "c", "d", "e", "f", "f", "g", "h"),  
+  label = c("a", "b", "c", "d", "e", "f", "g", "h", "i"),  
   x = -Inf,  
   y = Inf    
 )

@@ -6,8 +6,11 @@
 [![minimal R version](https://img.shields.io/badge/R%3E%3D-4.2.1-brightgreen.svg)](https://cran.r-project.org/) [![Licence](https://img.shields.io/github/license/mashape/apistatus.svg)](http://choosealicense.com/licenses/mit/) [![DOI](https://zenodo.org/badge/926511852.svg)](https://doi.org/10.5281/zenodo.14918748)
 
 
-This repository contains all information and results for the paper 
-*Optimal carbon partitioning drives sink potential dynamics of afforestation under climate change*. The paper have been submitted to *Global Change Biology*
+This repository contains all code for the paper 
+*Optimal carbon partitioning drives sink potential dynamics of afforestation under climate change* 
+
+The paper have been accepted in *Journal of Applied Ecology* (25-11-2025). The doi will be updated when it'll be available. 
+
 
 ## Website
 You can see the website of the repo at: https://ajpelu.github.io/c_allocation_pine 

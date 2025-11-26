@@ -488,6 +488,13 @@ ggsave(
 #   dpi = 400,
 #   width = 7.09*2.2, height = 7.09*1.8/2
 # )
+
+ggsave(
+  compare_plot_sp,
+  file = here::here("output/plot_compare_abi_npp_evi_sp.svg"),
+  dpi = 400,
+  width = 7.09*1.9, height = 7.09*.8
+)
 ```
 
 
