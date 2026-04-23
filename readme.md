@@ -7,10 +7,8 @@
 
 
 This repository contains all code for the paper 
-*Optimal carbon partitioning drives sink potential dynamics of afforestation under climate change* 
-
-The paper have been accepted in *Journal of Applied Ecology* (25-11-2025). The doi will be updated when it'll be available. 
-
+*Optimal carbon partitioning drives sink potential dynamics of afforestation under climate change* published in 
+*Journal of Applied Ecology*: 63, e70244. [10.1111/1365-2664.70244](https://doi.org/10.1111/1365-2664.70244)
 
 ## Website
 You can see the website of the repo at: https://ajpelu.github.io/c_allocation_pine 
@@ -40,3 +38,5 @@ This study is a contribution to projects:
 ### Repository: 
 Pérez-Luque AJ; Martín-Benit D; Zamora R & Gea-Izquierdo G. 2025. Code for *Optimal carbon partitioning drives sink potential dynamics of afforestation under climate change*. https://doi.org/10.5281/zenodo.7350714
 
+### Paper: 
+Pérez-Luque, A. J., Martin-Benito, D., Zamora, R., & Gea-Izquierdo, G. (2026). Optimal carbon partitioning drives sink potential dynamics in large-scale pine reforestation under climate change. Journal of Applied Ecology, 63, e70244. https://doi.org/10.1111/1365-2664.70244

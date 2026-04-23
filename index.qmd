@@ -19,9 +19,8 @@ author:
 [![DOI](https://zenodo.org/badge/926511852.svg)](https://doi.org/10.5281/zenodo.14918748)
 
 This repository contains all code for the paper 
-*Optimal carbon partitioning drives sink potential dynamics of afforestation under climate change* 
-
-The paper have been accepted in *Journal of Applied Ecology* (25-11-2025). The doi will be updated when it'll be available. 
+*Optimal carbon partitioning drives sink potential dynamics of afforestation under climate change* published in 
+*Journal of Applied Ecology*: 63, e70244. [10.1111/1365-2664.70244](https://doi.org/10.1111/1365-2664.70244)
 
 
 ## Analysis 
